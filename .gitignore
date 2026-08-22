@@ -5,3 +5,4 @@ __pycache__/
 .DS_Store
 .env
 .vscode/
+/stochastic-model/synthetic_dataset.csv
