@@ -1,0 +1,132 @@
+{
+  "system": {
+    "simulation": {
+      "timestep_hours": 1.0,
+      "episode_hours": 168
+    },
+    "design": {
+      "pv_capacity_kwp": 6.0,
+      "battery_capacity_kwh": 8.0
+    },
+    "battery": {
+      "efficiency": 0.9,
+      "c_rate": 1.0,
+      "minimum_soc_fraction": 0.0
+    },
+    "ev": {
+      "capacity_kwh": 80.0,
+      "minimum_soc_fraction": 0.4,
+      "maximum_power_kw": 5.0,
+      "efficiency": 1.0,
+      "minimum_duration_hours": 5,
+      "maximum_duration_hours": 8,
+      "weekday_visit_probability": 0.9,
+      "weekend_visit_probability": 0.15,
+      "arrival_hours": [
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13
+      ],
+      "arrival_weights": [
+        0.75,
+        0.9,
+        0.9,
+        0.75,
+        0.1,
+        0.1,
+        0.1
+      ]
+    },
+    "economics": {
+      "annual_discount_rate": 0.05,
+      "pv_lifetime_years": 20,
+      "pv_capex_fixed_chf": 100.0,
+      "pv_capex_per_kwp_chf": 775.0,
+      "pv_opex_per_kwp_year_chf": 100.0,
+      "battery_lifetime_years": 10,
+      "battery_capex_fixed_chf": 50.0,
+      "battery_capex_per_kwh_chf": 300.0,
+      "battery_opex_per_kwh_year_chf": 10.0,
+      "ev_discharge_cost_per_kwh": 1.5,
+      "ev_charge_revenue_per_kwh": 1.0,
+      "include_ev_energy_cost": false
+    }
+  },
+  "rl": {
+    "seed": 42,
+    "observation": {
+      "size": 11,
+      "load_scale_kw": 10.0,
+      "price_scale_chf_per_kwh": 1.0,
+      "pv_design_scale_kwp": 12.0,
+      "battery_design_scale_kwh": 20.0
+    },
+    "design_distribution": {
+      "dimensions": 2,
+      "initial_low": [
+        0.0,
+        0.0
+      ],
+      "initial_high": [
+        12.0,
+        20.0
+      ],
+      "minimum": [
+        0.0,
+        0.0
+      ],
+      "maximum": [
+        12.0,
+        20.0
+      ],
+      "learning_rate": 0.001,
+      "name": "gaussian",
+      "components": 8,
+      "initial_std_fraction": 0.2885,
+      "trainable_weights": false,
+      "hard_assignment_log_prob": true,
+      "prune_components": true,
+      "prune_evaluations_per_component": 100,
+      "entropy_weight": 0.0,
+      "entropy_zero_fraction": 0.0
+    },
+    "training": {
+      "iterations": 500,
+      "episodes_per_iteration": 32,
+      "validation_episodes": 32,
+      "dataset_days": 365,
+      "normalize_design_returns": true,
+      "gradient_clip_norm": 0.5,
+      "linear_learning_rate_decay": true,
+      "design_warmup_fraction": 0.1,
+      "fixed_design_fraction": 0.1,
+      "prune_interval_fraction": 0.1
+    },
+    "algorithm": {
+      "name": "ppo",
+      "hidden_sizes": [
+        128,
+        128,
+        128
+      ],
+      "activation": "tanh",
+      "learning_rate": 0.0001,
+      "discount_factor": 0.99,
+      "gae_lambda": 0.95,
+      "clip_ratio": 0.2,
+      "value_coefficient": 0.5,
+      "entropy_coefficient": 0.0,
+      "epochs": 4,
+      "minibatch_size": 64
+    },
+    "provenance": {
+      "control_algorithm": "Schaff et al. paper and official nlimb code",
+      "energy_environment": "local stochastic model"
+    },
+    "model_name": "ppo_gmm"
+  }
+}

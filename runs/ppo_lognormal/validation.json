@@ -1,0 +1,12 @@
+{
+  "model": "ppo_lognormal",
+  "split": "validation",
+  "episodes": 32,
+  "sampled_designs": false,
+  "mean_reward_chf": -92.4778961112847,
+  "std_reward_chf": 8.220482395370196,
+  "mean_cost_chf": 92.4778961112847,
+  "mean_pv_capacity_kwp": 6.137049198150635,
+  "mean_battery_capacity_kwh": 2.2321314811706543,
+  "max_power_balance_error_kw": 8.881784197001252e-16
+}

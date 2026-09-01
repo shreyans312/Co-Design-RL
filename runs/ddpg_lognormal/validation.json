@@ -1,0 +1,12 @@
+{
+  "model": "ddpg_lognormal",
+  "split": "validation",
+  "episodes": 32,
+  "sampled_designs": false,
+  "mean_reward_chf": -107.84861782192323,
+  "std_reward_chf": 6.407516119037749,
+  "mean_cost_chf": 107.84861782192323,
+  "mean_pv_capacity_kwp": 0.4495278000831604,
+  "mean_battery_capacity_kwh": 0.38432982563972473,
+  "max_power_balance_error_kw": 4.440892098500626e-16
+}
