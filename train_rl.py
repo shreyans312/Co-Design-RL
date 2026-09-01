@@ -68,6 +68,7 @@ class CoDesignTrainer:
         self.pruning_design_generator = torch.Generator().manual_seed(self.seed + 3)
         self.completed_iterations = 0
         self.distribution_history = []
+        self.training_samples = []
         self._record_distribution(iteration=0)
 
     def _record_distribution(self, iteration: int) -> None:
@@ -310,6 +311,27 @@ class CoDesignTrainer:
                     )
                 )
 
+            for episode, (design, result) in enumerate(zip(designs, episode_results)):
+                self.training_samples.append(
+                    {
+                        "iteration": iteration + 1,
+                        "episode": episode + 1,
+                        "model": self.rl_config["model_name"],
+                        "scenario_seed": self._episode_seed(iteration, episode, "train"),
+                        "sampled_from_distribution": design_batch is not None,
+                        "component": (
+                            int(design_batch["components"][episode])
+                            if design_batch is not None
+                            else None
+                        ),
+                        "pv_capacity_kwp": float(design[0]),
+                        "battery_capacity_kwh": float(design[1]),
+                        "reward_chf": result["reward_chf"],
+                        "cost_chf": result["cost_chf"],
+                        "max_power_balance_error_kw": result["max_power_balance_error_kw"],
+                    }
+                )
+
             algorithm_metrics = {}
             if isinstance(self.agent, PPOAgent):
                 algorithm_metrics = self.agent.update(self._combine_rollouts(episode_results))
@@ -468,6 +490,9 @@ def run_experiment(
 def _write_results(output_directory: Path, trainer: CoDesignTrainer, history: pd.DataFrame, validation: dict) -> None:
     output_directory.mkdir(parents=True, exist_ok=True)
     history.to_csv(output_directory / "training.csv", index=False)
+    pd.DataFrame(trainer.training_samples).to_csv(
+        output_directory / "training_samples.csv", index=False
+    )
     pd.DataFrame(trainer.distribution_history).to_csv(
         output_directory / "design_distribution.csv", index=False
     )
