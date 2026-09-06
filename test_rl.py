@@ -158,7 +158,7 @@ class RLAlgorithmTests(unittest.TestCase):
                 action=np.array([0.25, -0.25], dtype=np.float32),
                 reward=float(index),
                 next_observation=np.full(11, (index + 1) / 10, dtype=np.float32),
-                done=index == 3,
+                terminated=index == 3,
             )
 
         before = [parameter.detach().clone() for parameter in agent.critic.parameters()]

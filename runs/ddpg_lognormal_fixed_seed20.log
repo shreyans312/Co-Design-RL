@@ -1,0 +1,64 @@
+ddpg_lognormal iteration 10/500 reward=-570.653 validation_cost=227.925 pv=0.000 battery=0.001
+ddpg_lognormal iteration 20/500 reward=-1426.787 validation_cost=370.534 pv=0.001 battery=0.001
+ddpg_lognormal iteration 30/500 reward=-136.264 validation_cost=209.318 pv=0.001 battery=0.001
+ddpg_lognormal iteration 40/500 reward=-167.283 validation_cost=256.795 pv=0.002 battery=0.002
+ddpg_lognormal iteration 50/500 reward=-348.666 validation_cost=232.466 pv=0.003 battery=0.004
+ddpg_lognormal iteration 60/500 reward=-175.248 validation_cost=194.259 pv=0.005 battery=0.005
+ddpg_lognormal iteration 70/500 reward=-126.714 validation_cost=207.794 pv=0.006 battery=0.007
+ddpg_lognormal iteration 80/500 reward=-196.339 validation_cost=199.519 pv=0.009 battery=0.010
+ddpg_lognormal iteration 90/500 reward=-150.689 validation_cost=219.602 pv=0.011 battery=0.014
+ddpg_lognormal iteration 100/500 reward=-118.015 validation_cost=143.372 pv=0.014 battery=0.018
+ddpg_lognormal iteration 110/500 reward=-117.500 validation_cost=107.447 pv=0.016 battery=0.022
+ddpg_lognormal iteration 120/500 reward=-114.112 validation_cost=114.075 pv=0.019 battery=0.029
+ddpg_lognormal iteration 130/500 reward=-112.744 validation_cost=167.782 pv=0.022 battery=0.036
+ddpg_lognormal iteration 140/500 reward=-122.642 validation_cost=119.003 pv=0.027 battery=0.043
+ddpg_lognormal iteration 150/500 reward=-114.320 validation_cost=151.204 pv=0.032 battery=0.050
+ddpg_lognormal iteration 160/500 reward=-191.774 validation_cost=125.251 pv=0.037 battery=0.054
+ddpg_lognormal iteration 170/500 reward=-116.396 validation_cost=106.994 pv=0.043 battery=0.065
+ddpg_lognormal iteration 180/500 reward=-140.082 validation_cost=102.995 pv=0.053 battery=0.072
+ddpg_lognormal iteration 190/500 reward=-113.010 validation_cost=100.845 pv=0.057 battery=0.079
+ddpg_lognormal iteration 200/500 reward=-107.619 validation_cost=113.370 pv=0.053 battery=0.079
+ddpg_lognormal iteration 210/500 reward=-112.334 validation_cost=105.559 pv=0.054 battery=0.076
+ddpg_lognormal iteration 220/500 reward=-110.208 validation_cost=101.280 pv=0.061 battery=0.083
+ddpg_lognormal iteration 230/500 reward=-109.530 validation_cost=109.911 pv=0.065 battery=0.090
+ddpg_lognormal iteration 240/500 reward=-144.126 validation_cost=100.431 pv=0.067 battery=0.092
+ddpg_lognormal iteration 250/500 reward=-104.320 validation_cost=106.605 pv=0.069 battery=0.094
+ddpg_lognormal iteration 260/500 reward=-103.492 validation_cost=111.004 pv=0.071 battery=0.097
+ddpg_lognormal iteration 270/500 reward=-105.055 validation_cost=104.659 pv=0.066 battery=0.104
+ddpg_lognormal iteration 280/500 reward=-105.021 validation_cost=108.235 pv=0.061 battery=0.101
+ddpg_lognormal iteration 290/500 reward=-103.397 validation_cost=111.349 pv=0.061 battery=0.100
+ddpg_lognormal iteration 300/500 reward=-109.017 validation_cost=106.462 pv=0.060 battery=0.101
+ddpg_lognormal iteration 310/500 reward=-111.247 validation_cost=133.481 pv=0.061 battery=0.095
+ddpg_lognormal iteration 320/500 reward=-112.762 validation_cost=116.155 pv=0.065 battery=0.094
+ddpg_lognormal iteration 330/500 reward=-102.804 validation_cost=141.681 pv=0.071 battery=0.095
+ddpg_lognormal iteration 340/500 reward=-103.176 validation_cost=105.884 pv=0.075 battery=0.097
+ddpg_lognormal iteration 350/500 reward=-102.470 validation_cost=101.737 pv=0.078 battery=0.096
+ddpg_lognormal iteration 360/500 reward=-103.885 validation_cost=106.303 pv=0.080 battery=0.095
+ddpg_lognormal iteration 370/500 reward=-104.951 validation_cost=99.370 pv=0.083 battery=0.094
+ddpg_lognormal iteration 380/500 reward=-105.936 validation_cost=105.785 pv=0.089 battery=0.098
+ddpg_lognormal iteration 390/500 reward=-101.981 validation_cost=108.031 pv=0.094 battery=0.103
+ddpg_lognormal iteration 400/500 reward=-102.078 validation_cost=107.391 pv=0.095 battery=0.110
+ddpg_lognormal iteration 410/500 reward=-123.514 validation_cost=99.239 pv=0.102 battery=0.114
+ddpg_lognormal iteration 420/500 reward=-107.096 validation_cost=102.035 pv=0.101 battery=0.116
+ddpg_lognormal iteration 430/500 reward=-107.945 validation_cost=106.788 pv=0.107 battery=0.119
+ddpg_lognormal iteration 440/500 reward=-102.294 validation_cost=101.693 pv=0.115 battery=0.120
+ddpg_lognormal iteration 450/500 reward=-107.091 validation_cost=102.071 pv=0.124 battery=0.117
+ddpg_lognormal iteration 460/500 reward=-103.137 validation_cost=102.094 pv=0.126 battery=0.120
+ddpg_lognormal iteration 470/500 reward=-103.694 validation_cost=112.307 pv=0.138 battery=0.120
+ddpg_lognormal iteration 480/500 reward=-100.642 validation_cost=100.619 pv=0.152 battery=0.116
+ddpg_lognormal iteration 490/500 reward=-102.409 validation_cost=101.994 pv=0.164 battery=0.113
+ddpg_lognormal iteration 500/500 reward=-104.575 validation_cost=101.379 pv=0.183 battery=0.112
+[
+  {
+    "model": "ddpg_lognormal",
+    "split": "validation",
+    "episodes": 32,
+    "sampled_designs": false,
+    "mean_reward_chf": -107.09608050768733,
+    "std_reward_chf": 5.7010512402696705,
+    "mean_cost_chf": 107.09608050768733,
+    "mean_pv_capacity_kwp": 0.18270765244960785,
+    "mean_battery_capacity_kwh": 0.11206736415624619,
+    "max_power_balance_error_kw": 4.440892098500626e-16
+  }
+]

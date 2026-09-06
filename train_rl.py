@@ -143,13 +143,13 @@ class CoDesignTrainer:
 
             next_state, reward, done, transition = simulator.step(action)
             max_power_balance_error_kw = max(max_power_balance_error_kw, abs(transition["power_balance_error_kw"]))
-            next_observation = (
-                np.zeros(self.encoder.size, dtype=np.float32)
-                if done
-                else self.encoder.encode(next_state, design)
-            )
 
             if training and isinstance(self.agent, PPOAgent):
+                next_observation = (
+                    np.zeros(self.encoder.size, dtype=np.float32)
+                    if done
+                    else self.encoder.encode(next_state, design)
+                )
                 rollout["observations"].append(observation)
                 rollout["latent_actions"].append(decision["latent_action"])
                 rollout["log_probs"].append(decision["log_prob"])
@@ -158,7 +158,16 @@ class CoDesignTrainer:
                 rollout["dones"].append(done)
                 rollout["next_values"].append(0.0 if done else self.agent.value(next_observation))
             elif training and isinstance(self.agent, DDPGAgent):
-                self.agent.observe(observation, action, reward, next_observation, done)
+                # `done` here is always an episode-horizon truncation, never a genuine
+                # terminal state (simulator.py's only `done` trigger is the step-count
+                # check - see EnergySystemSimulator.step). There is no real observation
+                # beyond the horizon to encode, so reuse the last real observation as the
+                # bootstrap target's input instead of an all-zero placeholder. `terminated`
+                # stays False unless the simulator ever exposes a genuine terminal signal,
+                # so the critic's bootstrap is never incorrectly zeroed at truncation.
+                next_observation = observation if done else self.encoder.encode(next_state, design)
+                terminated = bool(getattr(simulator, "terminated", False))
+                self.agent.observe(observation, action, reward, next_observation, terminated)
                 metrics = self.agent.update()
                 if metrics is not None:
                     update_metrics.append(metrics)

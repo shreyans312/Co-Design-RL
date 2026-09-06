@@ -228,27 +228,32 @@ class ReplayBuffer:
         action: np.ndarray,
         reward: float,
         next_observation: np.ndarray,
-        done: bool,
+        terminated: bool,
     ) -> None:
+        # `terminated` must mean a genuine terminal state, not an episode-horizon
+        # truncation - only a genuine terminal state should zero the critic's
+        # bootstrap in DDPGAgent.update().
         self.storage.append(
             (
                 np.asarray(observation, dtype=np.float32),
                 np.asarray(action, dtype=np.float32),
                 float(reward),
                 np.asarray(next_observation, dtype=np.float32),
-                bool(done),
+                bool(terminated),
             )
         )
 
     def sample(self, batch_size: int) -> tuple[torch.Tensor, ...]:
         indices = self.rng.choice(len(self.storage), size=batch_size, replace=False)
-        observations, actions, rewards, next_observations, dones = zip(*(self.storage[index] for index in indices))
+        observations, actions, rewards, next_observations, terminated = zip(
+            *(self.storage[index] for index in indices)
+        )
         return (
             torch.as_tensor(np.stack(observations), dtype=torch.float32),
             torch.as_tensor(np.stack(actions), dtype=torch.float32),
             torch.as_tensor(rewards, dtype=torch.float32),
             torch.as_tensor(np.stack(next_observations), dtype=torch.float32),
-            torch.as_tensor(dones, dtype=torch.float32),
+            torch.as_tensor(terminated, dtype=torch.float32),
         )
 
 
@@ -286,20 +291,23 @@ class DDPGAgent:
         action: np.ndarray,
         reward: float,
         next_observation: np.ndarray,
-        done: bool,
+        terminated: bool,
     ) -> None:
-        self.replay.add(observation, action, reward, next_observation, done)
+        self.replay.add(observation, action, reward, next_observation, terminated)
 
     def update(self) -> dict | None:
         required_samples = max(self.learning_starts, self.minibatch_size)
         if len(self.replay) < required_samples:
             return None
 
-        observations, actions, rewards, next_observations, dones = self.replay.sample(self.minibatch_size)
-        # Build critic targets with target networks
+        observations, actions, rewards, next_observations, terminated = self.replay.sample(self.minibatch_size)
+        # Build critic targets with target networks. Only a genuine terminal state
+        # zeroes the bootstrap - this environment currently truncates every episode
+        # at a fixed horizon and never reaches a true terminal state, so `terminated`
+        # is 0 for every transition unless the simulator exposes a real terminal signal.
         with torch.no_grad():
             next_actions = self.target_actor(next_observations)
-            targets = rewards + self.gamma * (1.0 - dones) * self.target_critic(
+            targets = rewards + self.gamma * (1.0 - terminated) * self.target_critic(
                 next_observations, next_actions
             )
 
