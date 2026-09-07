@@ -203,6 +203,22 @@ class RLTrainingTests(unittest.TestCase):
 
                 self.assertEqual(len(training), 1)
                 self.assertEqual(training.iloc[0]["model"], model_name)
+                samples = pd.DataFrame(trainer.training_samples)
+                self.assertEqual(len(samples), 2)
+                self.assertEqual(samples["scenario_seed"].nunique(), 2)
+                np.testing.assert_allclose(
+                    samples[
+                        ["reward_chf", "cost_chf", "pv_capacity_kwp", "battery_capacity_kwh"]
+                    ].mean().to_numpy(dtype=float),
+                    training.iloc[0][
+                        [
+                            "mean_reward_chf",
+                            "mean_cost_chf",
+                            "mean_pv_capacity_kwp",
+                            "mean_battery_capacity_kwh",
+                        ]
+                    ].to_numpy(dtype=float),
+                )
                 distribution_history = pd.DataFrame(trainer.distribution_history)
                 expected_rows = 2 * rl_config["design_distribution"]["components"]
                 self.assertEqual(len(distribution_history), expected_rows)

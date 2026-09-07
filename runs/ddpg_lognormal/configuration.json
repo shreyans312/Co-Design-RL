@@ -1,0 +1,139 @@
+{
+  "system": {
+    "simulation": {
+      "timestep_hours": 1.0,
+      "episode_hours": 168
+    },
+    "design": {
+      "pv_capacity_kwp": 6.0,
+      "battery_capacity_kwh": 8.0
+    },
+    "battery": {
+      "efficiency": 0.9,
+      "c_rate": 1.0,
+      "minimum_soc_fraction": 0.0
+    },
+    "ev": {
+      "capacity_kwh": 80.0,
+      "minimum_soc_fraction": 0.4,
+      "maximum_power_kw": 5.0,
+      "efficiency": 1.0,
+      "minimum_duration_hours": 5,
+      "maximum_duration_hours": 8,
+      "weekday_visit_probability": 0.9,
+      "weekend_visit_probability": 0.15,
+      "arrival_hours": [
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13
+      ],
+      "arrival_weights": [
+        0.75,
+        0.9,
+        0.9,
+        0.75,
+        0.1,
+        0.1,
+        0.1
+      ]
+    },
+    "economics": {
+      "annual_discount_rate": 0.05,
+      "pv_lifetime_years": 20,
+      "pv_capex_fixed_chf": 100.0,
+      "pv_capex_per_kwp_chf": 775.0,
+      "pv_opex_per_kwp_year_chf": 100.0,
+      "battery_lifetime_years": 10,
+      "battery_capex_fixed_chf": 50.0,
+      "battery_capex_per_kwh_chf": 300.0,
+      "battery_opex_per_kwh_year_chf": 10.0,
+      "ev_discharge_cost_per_kwh": 1.5,
+      "ev_charge_revenue_per_kwh": 1.0,
+      "include_ev_energy_cost": false
+    }
+  },
+  "rl": {
+    "seed": 42,
+    "observation": {
+      "size": 11,
+      "load_scale_kw": 10.0,
+      "price_scale_chf_per_kwh": 1.0,
+      "pv_design_scale_kwp": 12.0,
+      "battery_design_scale_kwh": 20.0
+    },
+    "design_distribution": {
+      "dimensions": 2,
+      "initial_low": [
+        0.0,
+        0.0
+      ],
+      "initial_high": [
+        12.0,
+        20.0
+      ],
+      "minimum": [
+        0.0,
+        0.0
+      ],
+      "maximum": [
+        null,
+        null
+      ],
+      "learning_rate": 0.001,
+      "name": "lognormal",
+      "components": 3,
+      "initial_parameter_low": [
+        0.0,
+        0.0
+      ],
+      "initial_parameter_high": [
+        1.0,
+        1.0
+      ],
+      "initial_std": 1.0,
+      "trainable_weights": true,
+      "hard_assignment_log_prob": false,
+      "prune_components": false,
+      "entropy_weight": 0.01,
+      "entropy_zero_fraction": 0.5
+    },
+    "training": {
+      "iterations": 500,
+      "episodes_per_iteration": 32,
+      "validation_episodes": 32,
+      "dataset_days": 365,
+      "normalize_design_returns": false,
+      "gradient_clip_norm": 0.5,
+      "linear_learning_rate_decay": false,
+      "design_warmup_fraction": 0.0,
+      "fixed_design_fraction": 0.0,
+      "prune_interval_fraction": 0.0
+    },
+    "algorithm": {
+      "name": "ddpg",
+      "hidden_sizes": [
+        256,
+        256
+      ],
+      "activation": "relu",
+      "actor_learning_rate": 0.0001,
+      "critic_learning_rate": 0.001,
+      "discount_factor": 0.99,
+      "target_update_rate": 0.005,
+      "replay_capacity": 100000,
+      "minibatch_size": 256,
+      "exploration_noise_std": 0.1,
+      "learning_starts": 256
+    },
+    "provenance": {
+      "control_algorithm": "PV co-optimisation paper",
+      "energy_environment": "local stochastic model",
+      "unspecified_ddpg_hyperparameters": "explicit implementation defaults"
+    },
+    "model_name": "ddpg_lognormal"
+  }
+}
