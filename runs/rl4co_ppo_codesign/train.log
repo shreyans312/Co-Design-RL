@@ -1,0 +1,20 @@
+GPU available: False, used: False
+TPU available: False, using: 0 TPU cores
+\U0001f4a1 Tip: For seamless cloud logging and experiment tracking, try installing [litlogger](https://pypi.org/project/litlogger/) to enable LitLogger, which logs metrics and artifacts automatically to the Lightning Experiments platform.
+Training 500 iterations x 32 episodes = 2688000 timesteps
+rl4co_ppo_codesign iteration 1/500 reward=-13505.465 validation=nan pv=0.000 battery=0.000 mean_pv=3939.061 mean_battery=118.038 surrogate=-0.062 value_loss=1149.166
+rl4co_ppo_codesign iteration 5/500 reward=-785.882 validation=-386.590 pv=0.000 battery=0.000 mean_pv=49.271 mean_battery=59.634 surrogate=-0.093 value_loss=936.762
+rl4co_ppo_codesign iteration 10/500 reward=-1490.759 validation=-1254.161 pv=0.000 battery=0.000 mean_pv=142.688 mean_battery=95.421 surrogate=0.371 value_loss=695.418
+rl4co_ppo_codesign iteration 15/500 reward=-350.573 validation=-934.407 pv=0.001 battery=0.001 mean_pv=13.427 mean_battery=21.486 surrogate=-0.036 value_loss=218.422
+rl4co_ppo_codesign iteration 20/500 reward=-447.545 validation=-207.230 pv=0.001 battery=0.001 mean_pv=62.157 mean_battery=26.011 surrogate=-0.008 value_loss=1124.533
+rl4co_ppo_codesign iteration 25/500 reward=-1459.910 validation=-189.276 pv=0.001 battery=0.001 mean_pv=216.309 mean_battery=69.176 surrogate=-0.073 value_loss=1813.117
+rl4co_ppo_codesign iteration 30/500 reward=-358.932 validation=-291.183 pv=0.001 battery=0.002 mean_pv=17.964 mean_battery=24.204 surrogate=-0.034 value_loss=145.116
+rl4co_ppo_codesign iteration 35/500 reward=-2884.555 validation=-457.078 pv=0.002 battery=0.002 mean_pv=24.972 mean_battery=378.464 surrogate=-0.026 value_loss=280.263
+rl4co_ppo_codesign iteration 40/500 reward=-528.804 validation=-311.811 pv=0.002 battery=0.003 mean_pv=16.917 mean_battery=45.237 surrogate=-0.036 value_loss=735.984
+rl4co_ppo_codesign iteration 45/500 reward=-877.551 validation=-325.606 pv=0.002 battery=0.004 mean_pv=65.965 mean_battery=64.647 surrogate=-0.017 value_loss=446.814
+rl4co_ppo_codesign iteration 50/500 reward=-349.091 validation=-178.323 pv=0.002 battery=0.005 mean_pv=45.225 mean_battery=12.988 surrogate=-0.043 value_loss=276.498
+rl4co_ppo_codesign iteration 55/500 reward=-426.509 validation=-299.436 pv=0.003 battery=0.006 mean_pv=21.170 mean_battery=26.726 surrogate=-0.110 value_loss=450.995
+rl4co_ppo_codesign iteration 60/500 reward=-527.472 validation=-141.492 pv=0.004 battery=0.007 mean_pv=49.989 mean_battery=27.485 surrogate=-0.115 value_loss=903.978
+rl4co_ppo_codesign iteration 65/500 reward=-557.859 validation=-200.403 pv=0.005 battery=0.009 mean_pv=39.582 mean_battery=36.468 surrogate=-0.099 value_loss=337.645
+rl4co_ppo_codesign iteration 70/500 reward=-234.713 validation=-169.983 pv=0.006 battery=0.011 mean_pv=9.749 mean_battery=10.981 surrogate=-0.068 value_loss=151.086
+rl4co_ppo_codesign iteration 75/500 reward=-300.593 validation=-168.505 pv=0.007 battery=0.013 mean_pv=19.917 mean_battery=16.857 surrogate=-0.098 value_loss=222.739

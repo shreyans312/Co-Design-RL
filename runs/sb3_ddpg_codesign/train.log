@@ -1,0 +1,12 @@
+Training 500 iterations x 32 episodes = 2688000 timesteps
+sb3_codesign iteration 1/500 reward=-12713.985 validation=-715.806 pv=0.000 battery=0.000 mean_pv=3939.061 mean_battery=118.038 actor_loss=826.03 critic_loss=67.043
+sb3_codesign iteration 5/500 reward=-298.893 validation=-1601.973 pv=0.000 battery=0.000 mean_pv=49.242 mean_battery=60.360 actor_loss=2251.85 critic_loss=33.519
+sb3_codesign iteration 10/500 reward=-627.613 validation=-347.251 pv=0.000 battery=0.000 mean_pv=143.015 mean_battery=100.335 actor_loss=242.98 critic_loss=7.491
+sb3_codesign iteration 15/500 reward=-148.384 validation=-1110.745 pv=0.001 battery=0.001 mean_pv=13.330 mean_battery=22.892 actor_loss=1083.71 critic_loss=6.566
+sb3_codesign iteration 20/500 reward=-299.531 validation=-804.814 pv=0.001 battery=0.001 mean_pv=61.227 mean_battery=28.954 actor_loss=751.51 critic_loss=2748.531
+sb3_codesign iteration 25/500 reward=-791.154 validation=-174.488 pv=0.001 battery=0.001 mean_pv=200.949 mean_battery=81.775 actor_loss=235.13 critic_loss=0.442
+sb3_codesign iteration 30/500 reward=-163.817 validation=-162.217 pv=0.001 battery=0.001 mean_pv=16.735 mean_battery=27.923 actor_loss=220.03 critic_loss=0.401
+sb3_codesign iteration 35/500 reward=-690.784 validation=-238.111 pv=0.002 battery=0.002 mean_pv=23.011 mean_battery=569.442 actor_loss=270.68 critic_loss=0.544
+sb3_codesign iteration 40/500 reward=-188.616 validation=-409.605 pv=0.002 battery=0.002 mean_pv=16.157 mean_battery=56.608 actor_loss=218.54 critic_loss=5.393
+sb3_codesign iteration 45/500 reward=-367.810 validation=-284.083 pv=0.003 battery=0.002 mean_pv=63.848 mean_battery=87.139 actor_loss=201.31 critic_loss=1.798
+sb3_codesign iteration 50/500 reward=-216.847 validation=-283.003 pv=0.003 battery=0.003 mean_pv=37.938 mean_battery=15.820 actor_loss=181.29 critic_loss=0.545

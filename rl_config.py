@@ -68,8 +68,8 @@ DDPG_CONFIG = {
         "target_update_rate": 0.005,
         "replay_capacity": 100000,
         "minibatch_size": 256,
-        "exploration_noise_std": 0.10,
-        "learning_starts": 256,
+        "exploration_noise_std": 0.20,
+        "learning_starts": 512,
     },
     "training": {
         "design_warmup_fraction": 0.0,
