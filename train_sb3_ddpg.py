@@ -10,7 +10,8 @@ from gymnasium import spaces
 sys.path.insert(0, str(Path(__file__).with_name("stochastic-model")))
 
 from config import get_default_config, validate_config  # noqa: E402
-from data import DEFAULT_YEAR, generate_dataset  # noqa: E402
+from cauz_model import generate_cauz_like_dataset  # noqa: E402
+from data import DEFAULT_YEAR, generate_dataset, load_dataset  # noqa: E402
 from simulator import EnergySystemSimulator  # noqa: E402
 from stochastic import generate_episode_scenario  # noqa: E402
 
@@ -21,6 +22,8 @@ from stable_baselines3 import DDPG
 from stable_baselines3.common.callbacks import EvalCallback
 from stable_baselines3.common.monitor import Monitor
 from stable_baselines3.common.noise import NormalActionNoise
+
+CAUZ_DATASET_PATH = Path(__file__).with_name("stochastic-model") / "cauz_dataset.csv"
 
 
 class EnergySystemEnv(gym.Env):
@@ -43,6 +46,7 @@ class EnergySystemEnv(gym.Env):
         seed: int = 0,
         dataset_days: int = 365,
         episode_seeds: list[int] | None = None,
+        dataset: str = "synthetic",
     ) -> None:
         super().__init__()
         # When given, reset() cycles through these scenario seeds so repeated
@@ -56,7 +60,14 @@ class EnergySystemEnv(gym.Env):
         validate_config(self.system_config)
 
         self.split = split
-        self.data = generate_dataset(year=DEFAULT_YEAR, days=dataset_days, seed=seed)
+        if dataset == "cauz":
+            # Reconstructed real building data (see stochastic-model/prepare_cauz_dataset.py).
+            self.data = load_dataset(CAUZ_DATASET_PATH)
+        elif dataset == "cauz_model":
+            # Generator fitted to that data (see stochastic-model/cauz_model.py); a new year per seed.
+            self.data = generate_cauz_like_dataset(seed=seed)
+        else:
+            self.data = generate_dataset(year=DEFAULT_YEAR, days=dataset_days, seed=seed)
         self.design = np.array([pv_capacity_kwp, battery_capacity_kwh], dtype=np.float32)
 
         observation_config = deepcopy(COMMON_CONFIG["observation"])
@@ -108,12 +119,35 @@ class EnergySystemEnv(gym.Env):
 
 
 class DDPGSplitLR(DDPG):
-    """SB3 DDPG with separate actor/critic learning rates (the repo uses 1e-4 / 1e-3)."""
+    """SB3 DDPG with separate actor/critic learning rates (the repo uses 1e-4 / 1e-3).
 
-    def __init__(self, *args, actor_learning_rate: float = 1e-4, critic_learning_rate: float = 1e-3, **kwargs):
+    With sign_preserving_noise the exploration noise can never flip the sign of an action
+    (charge vs discharge): a noisy value that crosses zero is folded back, |a + noise|, keeping
+    the sign of the actor's own output. Actions stay clipped to [-1, 1] as in SB3.
+    """
+
+    def __init__(
+        self,
+        *args,
+        actor_learning_rate: float = 1e-4,
+        critic_learning_rate: float = 1e-3,
+        sign_preserving_noise: bool = False,
+        **kwargs,
+    ):
         self._actor_lr = actor_learning_rate
         self._critic_lr = critic_learning_rate
+        self._sign_preserving_noise = sign_preserving_noise
         super().__init__(*args, learning_rate=critic_learning_rate, **kwargs)
+
+    def _sample_action(self, learning_starts, action_noise=None, n_envs=1):
+        if not self._sign_preserving_noise or action_noise is None:
+            return super()._sample_action(learning_starts, action_noise, n_envs)
+        action, buffer_action = super()._sample_action(learning_starts, None, n_envs)
+        if self.num_timesteps < learning_starts:  # warm-up: uniform random actions, no noise
+            return action, buffer_action
+        sign = np.where(buffer_action >= 0.0, 1.0, -1.0)
+        folded = np.clip(sign * np.abs(buffer_action + action_noise()), -1.0, 1.0)
+        return self.policy.unscale_action(folded), folded
 
     def _update_learning_rate(self, optimizers) -> None:
         super()._update_learning_rate(optimizers)
@@ -130,6 +164,7 @@ def build_env(
     seed: int,
     dataset_days: int,
     episode_seeds: list[int] | None = None,
+    dataset: str = "synthetic",
 ) -> Monitor:
     env = EnergySystemEnv(
         pv_capacity_kwp=pv_capacity_kwp,
@@ -138,6 +173,7 @@ def build_env(
         seed=seed,
         dataset_days=dataset_days,
         episode_seeds=episode_seeds,
+        dataset=dataset,
     )
     return Monitor(env)
 
@@ -147,6 +183,13 @@ def main() -> None:
     parser.add_argument("--pv-capacity-kwp", type=float, default=6.0)
     parser.add_argument("--battery-capacity-kwh", type=float, default=14.0)
     parser.add_argument("--dataset-days", type=int, default=365)
+    parser.add_argument(
+        "--dataset",
+        choices=("synthetic", "cauz", "cauz_model"),
+        default="synthetic",
+        help="'cauz' = reconstructed real building data; 'cauz_model' = generator fitted to it "
+             "(one year per seed). Both ignore --dataset-days.",
+    )
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument(
         "--total-timesteps",
@@ -162,6 +205,11 @@ def main() -> None:
     parser.add_argument("--gamma", type=float, default=0.99)
     parser.add_argument("--learning-starts", type=int, default=512)
     parser.add_argument("--exploration-noise-std", type=float, default=0.20)
+    parser.add_argument(
+        "--sign-preserving-noise",
+        action="store_true",
+        help="Exploration noise may change an action's size but never its sign (charge/discharge).",
+    )
     parser.add_argument("--eval-freq", type=int, default=5_000)
     parser.add_argument("--n-eval-episodes", type=int, default=20)
     parser.add_argument("--output-dir", type=Path, default=Path("runs/sb3_ddpg"))
@@ -173,6 +221,7 @@ def main() -> None:
         split="train",
         seed=args.seed,
         dataset_days=args.dataset_days,
+        dataset=args.dataset,
     )
     eval_env = build_env(
         pv_capacity_kwp=args.pv_capacity_kwp,
@@ -181,6 +230,7 @@ def main() -> None:
         seed=args.seed + 1,
         dataset_days=args.dataset_days,
         episode_seeds=[10_000 + args.seed * 1000 + i for i in range(args.n_eval_episodes)],
+        dataset=args.dataset,
     )
 
     action_noise = NormalActionNoise(
@@ -200,6 +250,7 @@ def main() -> None:
         gamma=args.gamma,
         learning_starts=args.learning_starts,
         action_noise=action_noise,
+        sign_preserving_noise=args.sign_preserving_noise,
         policy_kwargs={"net_arch": [256, 256]},
         seed=args.seed,
         verbose=1,

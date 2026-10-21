@@ -35,7 +35,8 @@ python train_sb3_ddpg.py --pv-capacity-kwp 6.6 --battery-capacity-kwh 4.5 --tota
 |---|---|---|
 | `--pv-capacity-kwp` | 6.0 | PV size of the fixed design |
 | `--battery-capacity-kwh` | 14.0 | Battery size of the fixed design |
-| `--dataset-days` | 365 | Days of generated data |
+| `--dataset-days` | 365 | Days of generated data (synthetic only) |
+| `--dataset` | `synthetic` | `cauz` = reconstructed real building data (`stochastic-model/cauz_dataset.csv`, built by `prepare_cauz_dataset.py`); `cauz_model` = stochastic generator fitted to that data (`stochastic-model/cauz_model.py`, a new year per `--seed`). Both ignore `--dataset-days` |
 | `--seed` | 42 | Seeds the dataset, SB3 and the eval episodes |
 | `--total-timesteps` | 100000 | 2,688,000 matches the repo's custom DDPG schedule (500 iterations x 32 episodes x 168 h) |
 | `--actor-learning-rate` | 1e-4 | |
