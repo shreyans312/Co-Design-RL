@@ -301,27 +301,35 @@ class DDPGAgent:
             return None
 
         observations, actions, rewards, next_observations, terminated = self.replay.sample(self.minibatch_size)
-        # Build critic targets with target networks. Only a genuine terminal state
-        # zeroes the bootstrap - this environment currently truncates every episode
-        # at a fixed horizon and never reaches a true terminal state, so `terminated`
-        # is 0 for every transition unless the simulator exposes a real terminal signal.
+        # Bootstrap only when a valid next state is available
         with torch.no_grad():
             next_actions = self.target_actor(next_observations)
             targets = rewards + self.gamma * (1.0 - terminated) * self.target_critic(
                 next_observations, next_actions
             )
 
-        critic_loss = functional.mse_loss(self.critic(observations, actions), targets)
+        predictions = self.critic(observations, actions)
+        critic_loss = functional.mse_loss(predictions, targets)
         self.critic_optimizer.zero_grad()
         critic_loss.backward()
-        nn.utils.clip_grad_norm_(self.critic.parameters(), self.gradient_clip_norm)
+        critic_gradient_norm = nn.utils.clip_grad_norm_(
+            self.critic.parameters(), self.gradient_clip_norm, error_if_nonfinite=True,
+        )
         self.critic_optimizer.step()
 
-        actor_loss = -self.critic(observations, self.actor(observations)).mean()
-        self.actor_optimizer.zero_grad()
-        actor_loss.backward()
-        nn.utils.clip_grad_norm_(self.actor.parameters(), self.gradient_clip_norm)
-        self.actor_optimizer.step()
+        # Keep action gradients while avoiding unused critic gradients
+        self.critic.requires_grad_(False)
+        try:
+            policy_actions = self.actor(observations)
+            actor_loss = -self.critic(observations, policy_actions).mean()
+            self.actor_optimizer.zero_grad()
+            actor_loss.backward()
+            actor_gradient_norm = nn.utils.clip_grad_norm_(
+                self.actor.parameters(), self.gradient_clip_norm, error_if_nonfinite=True,
+            )
+            self.actor_optimizer.step()
+        finally:
+            self.critic.requires_grad_(True)
 
         # Move target networks toward learned networks
         with torch.no_grad():
@@ -335,6 +343,12 @@ class DDPGAgent:
         return {
             "actor_loss": float(actor_loss.item()),
             "critic_loss": float(critic_loss.item()),
+            "actor_gradient_norm": float(actor_gradient_norm),
+            "critic_gradient_norm": float(critic_gradient_norm),
+            "q_mean": float(predictions.detach().mean()),
+            "target_q_mean": float(targets.mean()),
+            "td_error_abs_mean": float((predictions.detach() - targets).abs().mean()),
+            "policy_action_saturation": float((policy_actions.detach().abs() >= 0.95).float().mean()),
         }
 
 

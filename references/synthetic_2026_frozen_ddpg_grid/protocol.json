@@ -1,0 +1,225 @@
+{
+  "checkpoint": "/Users/shreyansjain/Desktop/ReiforcementLearning/Co-Design-RL/runs/ddpg_frozen_scoring_seed43_vssh7N/ddpg_lognormal_improved/checkpoint.pt",
+  "checkpoint_sha256": "356390cf111b97e66da7b5cce094128e543d74023915bd53313c6636094b2191",
+  "checkpoint_iteration": 500,
+  "training_seed": 43,
+  "dataset_seed": 42,
+  "dataset_year": 2026,
+  "pv_grid_kwp": [
+    0.5,
+    1.0,
+    1.5,
+    2.0,
+    2.5,
+    3.0,
+    3.5,
+    4.0,
+    4.5,
+    5.0,
+    5.5,
+    6.0,
+    6.5,
+    7.0
+  ],
+  "battery_grid_kwh": [
+    0.5,
+    1.0,
+    1.5,
+    2.0,
+    2.5,
+    3.0,
+    3.5,
+    4.0,
+    4.5,
+    5.0,
+    5.5,
+    6.0,
+    6.5,
+    7.0
+  ],
+  "grid_design_count": 196,
+  "selection_seed": 1000042,
+  "selection_episodes_per_design": 32,
+  "assessment_seed": 70000000,
+  "assessment_episodes_per_design": 320,
+  "original_design": [
+    2.7286651134490967,
+    5.493160724639893
+  ],
+  "split": "validation",
+  "action_noise": 0,
+  "training_updates": 0,
+  "ranking_metric": "mean simulated total weekly cost, including design cost",
+  "selection_rule": "minimum grid selection mean; ties broken by ascending PV then battery",
+  "scope": "Fixed final actor, no retraining; new assessment draws on existing validation weeks",
+  "episode_budget": 6944,
+  "simulation_step_budget": 1166592,
+  "source_sha256": {
+    "train_rl.py": "78980f40f8fb2eb838432fa240c876790ab7b9678a18b41fb4df2d2cb5a70279",
+    "rl_algorithms.py": "ea4bd01e8dad1a8d77bdb30a00b766887ddf68349628d90726890445be6b2f50",
+    "design_distributions.py": "7ee8a68bff6ffe1f496707ea6ebeac01ba785bae2b0cf786486407bbc5274a68",
+    "rl_config.py": "a6cf764e235f97bf41c20699e0a1ac01fc398d1873257218025cf5bb6ef63c45",
+    "stochastic-model/config.py": "ccbde6a2a4491b487123eba36484db45af2c09a316d435a74987d78ac56d8b5d",
+    "stochastic-model/data.py": "c6c051f6a815233d0b91640a8a0c29363aa199022d5230dccddf84d88922d669",
+    "stochastic-model/stochastic.py": "c56bd21cf2a4b7934069413c062de14a3696a7d39eb40a9eaba712779ed6773d",
+    "stochastic-model/simulator.py": "73c7891ac5edbc81564dd607986775ccae2ee559f70c895fcce3e4f30acf34f6"
+  },
+  "system_config": {
+    "simulation": {
+      "timestep_hours": 1.0,
+      "episode_hours": 168
+    },
+    "design": {
+      "pv_capacity_kwp": 6.0,
+      "battery_capacity_kwh": 8.0
+    },
+    "battery": {
+      "efficiency": 0.9,
+      "c_rate": 1.0,
+      "minimum_soc_fraction": 0.0
+    },
+    "ev": {
+      "capacity_kwh": 80.0,
+      "minimum_soc_fraction": 0.4,
+      "maximum_power_kw": 5.0,
+      "efficiency": 1.0,
+      "minimum_duration_hours": 5,
+      "maximum_duration_hours": 8,
+      "weekday_visit_probability": 0.9,
+      "weekend_visit_probability": 0.15,
+      "arrival_hours": [
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13
+      ],
+      "arrival_weights": [
+        0.75,
+        0.9,
+        0.9,
+        0.75,
+        0.1,
+        0.1,
+        0.1
+      ]
+    },
+    "economics": {
+      "annual_discount_rate": 0.05,
+      "pv_lifetime_years": 20,
+      "pv_capex_fixed_chf": 100.0,
+      "pv_capex_per_kwp_chf": 775.0,
+      "pv_opex_per_kwp_year_chf": 100.0,
+      "battery_lifetime_years": 10,
+      "battery_capex_fixed_chf": 50.0,
+      "battery_capex_per_kwh_chf": 300.0,
+      "battery_opex_per_kwh_year_chf": 10.0,
+      "ev_discharge_cost_per_kwh": 1.5,
+      "ev_charge_revenue_per_kwh": 1.0,
+      "include_ev_energy_cost": false
+    }
+  },
+  "rl_config": {
+    "seed": 43,
+    "observation": {
+      "size": 11,
+      "load_scale_kw": 10.0,
+      "price_scale_chf_per_kwh": 1.0,
+      "pv_design_scale_kwp": 12.0,
+      "battery_design_scale_kwh": 20.0
+    },
+    "design_distribution": {
+      "dimensions": 2,
+      "initial_low": [
+        0.0,
+        0.0
+      ],
+      "initial_high": [
+        12.0,
+        20.0
+      ],
+      "minimum": [
+        0.0,
+        0.0
+      ],
+      "maximum": [
+        12.0,
+        20.0
+      ],
+      "learning_rate": 0.001,
+      "name": "lognormal",
+      "components": 4,
+      "initial_std": 0.55,
+      "minimum_std": 0.15,
+      "maximum_std": 0.9,
+      "stratified_initialization": true,
+      "stratified_sampling": true,
+      "minimum_component_weight": 0.05,
+      "trainable_weights": true,
+      "hard_assignment_log_prob": false,
+      "prune_components": false,
+      "entropy_weight": 0.02,
+      "entropy_zero_fraction": 0.75
+    },
+    "training": {
+      "iterations": 500,
+      "episodes_per_iteration": 32,
+      "scenarios_per_design": 4,
+      "validation_episodes": 32,
+      "dataset_days": 365,
+      "normalize_design_returns": true,
+      "design_return_baseline": "leave_one_out",
+      "design_scoring": "frozen_actor",
+      "gradient_clip_norm": 0.5,
+      "linear_learning_rate_decay": false,
+      "design_warmup_fraction": 0.1,
+      "fixed_design_fraction": 0.0,
+      "prune_interval_fraction": 0.0,
+      "dataset_seed": 42,
+      "matched_validation": true,
+      "validation_seed": 1000042,
+      "validation_every": 5,
+      "reference_designs": [
+        [
+          4.0,
+          4.5
+        ],
+        [
+          6.6,
+          4.5
+        ],
+        [
+          9.0,
+          4.5
+        ]
+      ]
+    },
+    "algorithm": {
+      "name": "ddpg",
+      "hidden_sizes": [
+        256,
+        256
+      ],
+      "activation": "relu",
+      "actor_learning_rate": 0.0001,
+      "critic_learning_rate": 0.001,
+      "discount_factor": 0.99,
+      "target_update_rate": 0.005,
+      "replay_capacity": 100000,
+      "minibatch_size": 256,
+      "exploration_noise_std": 0.3,
+      "learning_starts": 512,
+      "final_exploration_noise_std": 0.05
+    },
+    "provenance": {
+      "control_algorithm": "DDPG",
+      "energy_environment": "local stochastic model",
+      "design_method": "bounded stratified log-normal mixture with common random scenarios",
+      "paper_faithful": false,
+      "design_scoring": "post-controller frozen actor on fresh common training scenarios"
+    },
+    "model_name": "ddpg_lognormal_improved"
+  }
+}

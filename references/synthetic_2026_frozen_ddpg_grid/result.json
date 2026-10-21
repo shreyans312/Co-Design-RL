@@ -1,0 +1,20 @@
+{
+  "selected_grid_design": [
+    7.0,
+    7.0
+  ],
+  "selected_grid_cost_chf": 76.98835393330481,
+  "original_design": [
+    2.7286651134490967,
+    5.493160724639893
+  ],
+  "original_selection_cost_chf": 90.63875117646504,
+  "original_cost_chf": 92.80726995551248,
+  "selected_cost_chf": 79.1101754760119,
+  "paired_saving_chf": 13.697094479500572,
+  "paired_scenario_se_chf": 0.21211395201259345,
+  "assessment_seed": 70000000,
+  "assessment_episodes": 320,
+  "selected_on_grid_boundary": true,
+  "model_unchanged_verified": true
+}

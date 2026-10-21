@@ -145,12 +145,20 @@ def generate_ev_schedule(episode_data: pd.DataFrame, config: dict, rng: np.rando
         "ev_arrival_soc_kwh": ev_arrival_soc_kwh,
     })
     
-def generate_episode_scenario(data: pd.DataFrame, config: dict, split: str = "train", seed: int = 42,) -> dict:
+def generate_episode_scenario(
+    data: pd.DataFrame,
+    config: dict,
+    split: str = "train",
+    seed: int = 42,
+    bootstrap_hours: int = 0,
+) -> dict:
     validate_dataset(data)
     validate_config(config)
     
     if split not in VALID_SPLITS:
         raise ValueError(f"split must be one of {sorted(VALID_SPLITS)}")
+    if not isinstance(bootstrap_hours, int) or isinstance(bootstrap_hours, bool) or bootstrap_hours < 0:
+        raise ValueError("bootstrap_hours must be a non-negative integer")
     
     rng = np.random.default_rng(seed)
     
@@ -159,11 +167,21 @@ def generate_episode_scenario(data: pd.DataFrame, config: dict, split: str = "tr
     start_index = sample_episode_start(data=data, episode_hours=episode_hours, split=split, rng=rng)
     end_index = (start_index + episode_hours)
     
-    episode_data = (data.iloc[start_index: end_index].copy().reset_index(drop=True))
-    
     initial_battery_soc_kwh = (sample_initial_battery_soc(config=config, split=split, rng=rng))
-    
-    ev_schedule = generate_ev_schedule(episode_data=episode_data, config=config, rng=rng)
+
+    bootstrap_end = min(end_index + bootstrap_hours, len(data))
+    bootstrap_mask = data.iloc[end_index:bootstrap_end]["is_validation"]
+    valid_bootstrap = len(bootstrap_mask) == bootstrap_hours
+    if split == "train":
+        valid_bootstrap = valid_bootstrap and not bootstrap_mask.any()
+    elif split == "validation":
+        valid_bootstrap = valid_bootstrap and bootstrap_mask.all()
+
+    schedule_end = bootstrap_end if valid_bootstrap else end_index
+    schedule_data = data.iloc[start_index:schedule_end].copy().reset_index(drop=True)
+    full_ev_schedule = generate_ev_schedule(episode_data=schedule_data, config=config, rng=rng)
+    episode_data = schedule_data.iloc[:episode_hours].copy().reset_index(drop=True)
+    ev_schedule = full_ev_schedule.iloc[:episode_hours].copy().reset_index(drop=True)
     
     return {
         "seed": seed,
@@ -172,6 +190,8 @@ def generate_episode_scenario(data: pd.DataFrame, config: dict, split: str = "tr
         "initial_battery_soc_kwh": initial_battery_soc_kwh,
         "episode_data": episode_data,
         "ev_schedule": ev_schedule,
+        "bootstrap_data": schedule_data.iloc[episode_hours:].copy().reset_index(drop=True),
+        "bootstrap_ev_schedule": full_ev_schedule.iloc[episode_hours:].copy().reset_index(drop=True),
     }
     
 def validate_episode_scenario(scenario: dict, config: dict) -> None:

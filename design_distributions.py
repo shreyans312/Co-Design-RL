@@ -12,6 +12,10 @@ class DesignMixture(nn.Module):
         self.components = int(distribution["components"])
         self.dimensions = int(distribution["dimensions"])
         self.hard_assignment_log_prob = bool(distribution["hard_assignment_log_prob"])
+        self.stratified_sampling = bool(distribution.get("stratified_sampling", False))
+        self.minimum_component_weight = float(distribution.get("minimum_component_weight", 0.0))
+        self.minimum_std = float(distribution.get("minimum_std", 0.0))
+        self.maximum_std = float(distribution.get("maximum_std", math.inf))
         self.generator = torch.Generator().manual_seed(seed)
 
         low = torch.tensor(distribution["initial_low"], dtype=torch.float32)
@@ -29,6 +33,12 @@ class DesignMixture(nn.Module):
         mean_low = low + 0.1 * span
         mean_high = high - 0.1 * span
         random_means = torch.rand((self.components, self.dimensions), generator=self.generator)
+        if distribution.get("stratified_initialization", False):
+            strata = torch.arange(self.components, dtype=torch.float32)[:, None]
+            random_means = (strata + random_means) / self.components
+            for dimension in range(self.dimensions):
+                order = torch.randperm(self.components, generator=self.generator)
+                random_means[:, dimension] = random_means[order, dimension]
         physical_means = mean_low + random_means * (mean_high - mean_low)
 
         if self.name == "gaussian":
@@ -73,7 +83,21 @@ class DesignMixture(nn.Module):
 
     def _log_weights(self) -> torch.Tensor:
         masked_logits = self.mixture_logits.masked_fill(~self.active_mask, -torch.inf)
-        return torch.log_softmax(masked_logits, dim=0)
+        weights = torch.softmax(masked_logits, dim=0)
+        if self.minimum_component_weight:
+            active = self.active_mask.to(weights.dtype)
+            trainable_mass = 1.0 - self.minimum_component_weight * self.active_components
+            weights = trainable_mass * weights + self.minimum_component_weight * active
+        return torch.log(weights)
+
+    def constrain_parameters(self) -> None:
+        if not self.minimum_std and not math.isfinite(self.maximum_std):
+            return
+        with torch.no_grad():
+            self.component_log_stds.clamp_(
+                min=math.log(self.minimum_std) if self.minimum_std else None,
+                max=math.log(self.maximum_std) if math.isfinite(self.maximum_std) else None,
+            )
 
     def _component_log_prob(self, latent: torch.Tensor) -> torch.Tensor:
         # Score samples against every mixture component
@@ -127,12 +151,26 @@ class DesignMixture(nn.Module):
         if generator is None:
             generator = self.generator
 
-        components = torch.multinomial(
-            self._log_weights().exp(),
-            num_samples=batch_size,
-            replacement=True,
-            generator=generator,
-        )
+        weights = self._log_weights().exp()
+        if self.stratified_sampling:
+            expected = batch_size * weights
+            counts = torch.floor(expected).to(torch.long)
+            remaining = batch_size - int(counts.sum())
+            if remaining:
+                residual = expected - counts
+                extras = torch.multinomial(
+                    residual / residual.sum(), remaining, replacement=True, generator=generator
+                )
+                counts.scatter_add_(0, extras, torch.ones_like(extras))
+            components = torch.repeat_interleave(torch.arange(self.components), counts)
+            components = components[torch.randperm(batch_size, generator=generator)]
+        else:
+            components = torch.multinomial(
+                weights,
+                num_samples=batch_size,
+                replacement=True,
+                generator=generator,
+            )
         return self._sample_components(components, generator)
 
     def sample_component(

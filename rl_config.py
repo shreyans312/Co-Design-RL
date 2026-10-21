@@ -21,9 +21,12 @@ COMMON_CONFIG = {
     "training": {
         "iterations": 500,
         "episodes_per_iteration": 32,
+        "scenarios_per_design": 1,
         "validation_episodes": 32,
         "dataset_days": 365,
         "normalize_design_returns": True,
+        "design_return_baseline": "none",
+        "design_scoring": "training",
         "gradient_clip_norm": 0.5,
         "linear_learning_rate_decay": False,
     },
@@ -76,11 +79,13 @@ DDPG_CONFIG = {
         "fixed_design_fraction": 0.0,
         "prune_interval_fraction": 0.0,
         "normalize_design_returns": False,
+        "design_return_baseline": "leave_one_out",
     },
     "provenance": {
         "control_algorithm": "PV co-optimisation paper",
         "energy_environment": "local stochastic model",
         "unspecified_ddpg_hyperparameters": "explicit implementation defaults",
+        "design_initial_std": "1.5 implementation choice; paper specifies high variance without a value",
     },
 }
 
@@ -115,6 +120,42 @@ VARIANTS = {
             "prune_components": False,
             "entropy_weight": 5,
             "entropy_zero_fraction": 0.50,
+        },
+    },
+    "ddpg_lognormal_improved": {
+        **DDPG_CONFIG,
+        "algorithm": {
+            **DDPG_CONFIG["algorithm"],
+            "exploration_noise_std": 0.20,
+            "final_exploration_noise_std": 0.05,
+        },
+        "training": {
+            **DDPG_CONFIG["training"],
+            "scenarios_per_design": 4,
+            "normalize_design_returns": True,
+        },
+        "design_distribution": {
+            "name": "lognormal",
+            "components": 4,
+            "initial_std": 0.55,
+            "minimum_std": 0.15,
+            "maximum_std": 0.90,
+            "minimum": (0.0, 0.0),
+            "maximum": (12.0, 20.0),
+            "stratified_initialization": True,
+            "stratified_sampling": True,
+            "minimum_component_weight": 0.05,
+            "trainable_weights": True,
+            "hard_assignment_log_prob": False,
+            "prune_components": False,
+            "entropy_weight": 0.02,
+            "entropy_zero_fraction": 0.75,
+        },
+        "provenance": {
+            "control_algorithm": "DDPG",
+            "energy_environment": "local stochastic model",
+            "design_method": "bounded stratified log-normal mixture with common random scenarios",
+            "paper_faithful": False,
         },
     },
     "ppo_lognormal": {
@@ -160,8 +201,25 @@ def validate_rl_config(config: dict) -> None:
         raise ValueError("training.iterations must be positive")
     if training["episodes_per_iteration"] <= 0:
         raise ValueError("training.episodes_per_iteration must be positive")
+    if training["scenarios_per_design"] <= 0:
+        raise ValueError("training.scenarios_per_design must be positive")
+    if training["episodes_per_iteration"] % training["scenarios_per_design"]:
+        raise ValueError("episodes_per_iteration must be divisible by scenarios_per_design")
     if training["validation_episodes"] <= 0:
         raise ValueError("training.validation_episodes must be positive")
+    if training["design_return_baseline"] not in {"none", "leave_one_out"}:
+        raise ValueError("training.design_return_baseline must be 'none' or 'leave_one_out'")
+    if training.get("design_scoring", "training") not in {"training", "frozen_actor"}:
+        raise ValueError("training.design_scoring must be 'training' or 'frozen_actor'")
+    if training.get("design_scoring", "training") == "frozen_actor" and algorithm["name"] != "ddpg":
+        raise ValueError("Frozen-actor design scoring is a DDPG experiment")
+    minimum_weight = float(design.get("minimum_component_weight", 0.0))
+    if minimum_weight < 0.0 or minimum_weight * design["components"] >= 1.0:
+        raise ValueError("minimum_component_weight must be non-negative and leave trainable mass")
+    minimum_std = float(design.get("minimum_std", 0.0))
+    maximum_std = float(design.get("maximum_std", float("inf")))
+    if minimum_std < 0.0 or maximum_std <= 0.0 or minimum_std > maximum_std:
+        raise ValueError("design standard-deviation bounds are invalid")
 
 
 def get_rl_config(model_name: str) -> dict:
