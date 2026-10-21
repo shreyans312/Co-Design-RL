@@ -14,15 +14,22 @@ foreach ($experiment in $experiments) {
     }
 }
 
-if (-not (Get-Command py -ErrorAction SilentlyContinue)) {
-    throw "Python launcher 'py' was not found. Install Python 3.12 for Windows"
+if ($env:CONDA_PREFIX) {
+    $python = Join-Path $env:CONDA_PREFIX "python.exe"
+    if (-not (Test-Path $python)) { throw "Active Conda environment has no python.exe: $env:CONDA_PREFIX" }
+} else {
+    if (-not (Get-Command py -ErrorAction SilentlyContinue)) {
+        throw "Activate a Python 3.12 Conda environment or install the Windows 'py' launcher"
+    }
+    $python = Join-Path $PSScriptRoot ".venv\Scripts\python.exe"
+    if (-not (Test-Path $python)) {
+        & py -3.12 -m venv .venv
+        if ($LASTEXITCODE -ne 0) { throw "Could not create the Python 3.12 environment" }
+    }
 }
 
-$python = Join-Path $PSScriptRoot ".venv\Scripts\python.exe"
-if (-not (Test-Path $python)) {
-    & py -3.12 -m venv .venv
-    if ($LASTEXITCODE -ne 0) { throw "Could not create the Python 3.12 environment" }
-}
+& $python -c 'import sys; assert sys.version_info[:2] == (3, 12), "Python 3.12 is required"; print(sys.executable)'
+if ($LASTEXITCODE -ne 0) { throw "Python version check failed; no training was started" }
 
 & $python -m pip install torch==2.9.0 --index-url https://download.pytorch.org/whl/cu128
 if ($LASTEXITCODE -ne 0) { throw "CUDA PyTorch installation failed" }
