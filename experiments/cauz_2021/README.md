@@ -22,3 +22,5 @@ python3 -u train_rl.py \
 ```
 
 Use a new directory for additional training seeds. For fixed-design SB3 controller-only runs, `train_sb3_ddpg.py --dataset cauz` already uses the same canonical CSV, but those runs are a different algorithmic experiment.
+
+For Windows CUDA runs, first install a PyTorch build compatible with the GPU and confirm `torch.cuda.is_available()`. The custom DDPG command accepts `--device cuda`; only the controller networks and replay minibatches move to CUDA, while the simulator and design distribution stay on CPU. `--design-scoring training` disables the extra frozen-actor scoring pass. To study the original three-component, non-stratified DDPG separately, use `--model ddpg_lognormal`; `--design-initial-std 0.8` is an explicit experimental override of its default `3.0` log-space scale. Keep the unchanged original and overridden runs in different directories and compare them on matched validation scenarios. A larger controller action-noise standard deviation is a different intervention from widening the design distribution.

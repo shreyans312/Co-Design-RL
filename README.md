@@ -48,7 +48,7 @@ Run one model by replacing `all`
 python train_rl.py --model ppo_gmm --log-every 10 --save-every 10 --output-directory runs/
 ```
 
-The implementation currently runs on CPU. A GPU is not used by the training code.
+The custom DDPG trainer defaults to CPU. Pass `--device cuda` to put its actor, critic, target networks and replay minibatches on an NVIDIA GPU. The stochastic simulator and design mixture remain on CPU; PPO remains CPU-only. CUDA availability is checked explicitly, and the effective device is saved in `configuration.json`. Small per-hour network updates may not be faster on GPU, so measure throughput before launching many parallel jobs.
 
 ## Training terminology
 
@@ -112,6 +112,8 @@ The default full run contains 500 iterations per model. At iteration 10, a model
 PPO variants use 10% design warmup, 10% pruning intervals, and a fixed design during the final 10% of training. Each pruning evaluation uses 100 episodes per active component
 
 The current imported `ddpg_lognormal` preset uses log-space location ranges `(0.1823, 0.6931)` to `(2.3795, 2.8904)`, log-space standard deviation `3.0`, design learning rate `0.005`, and initial entropy weight `5`. These are experimental settings, not verified paper hyperparameters, and differ from the older saved baseline runs. Its unbounded log-normal tail can generate very large capacities. For the controlled custom-DDPG experiments below, use `ddpg_lognormal_improved`, which retains its bounded design initialization
+
+For a separate non-stratified exploration study, `--model ddpg_lognormal --design-initial-std 0.8` changes only the initial log-space scale and records it in the run configuration. The original preset remains `3.0`; do not label an overridden run as the unchanged baseline. `--exploration-noise-std` changes controller actions, not the PV/battery mixture.
 
 DDPG uses a leave-one-out return baseline for its design update, comparing each design with the other 31 designs in the same iteration. When an output directory is provided, training tables and a model snapshot are saved every 10 iterations by default
 

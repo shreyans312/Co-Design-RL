@@ -258,12 +258,17 @@ class ReplayBuffer:
 
 
 class DDPGAgent:
-    def __init__(self, config: dict, seed: int) -> None:
+    def __init__(self, config: dict, seed: int, device: str = "cpu") -> None:
+        if device not in {"cpu", "cuda"}:
+            raise ValueError("DDPG device must be 'cpu' or 'cuda'")
+        if device == "cuda" and not torch.cuda.is_available():
+            raise RuntimeError("CUDA was requested but is not available to PyTorch")
+        self.device = torch.device(device)
         torch.manual_seed(seed)
         algorithm = config["algorithm"]
         observation_size = int(config["observation"]["size"])
-        self.actor = DDPGActor(observation_size, algorithm)
-        self.critic = DDPGCritic(observation_size, algorithm)
+        self.actor = DDPGActor(observation_size, algorithm).to(self.device)
+        self.critic = DDPGCritic(observation_size, algorithm).to(self.device)
         self.target_actor = deepcopy(self.actor)
         self.target_critic = deepcopy(self.critic)
         self.actor_optimizer = torch.optim.Adam(self.actor.parameters(), lr=algorithm["actor_learning_rate"])
@@ -278,9 +283,9 @@ class DDPGAgent:
         self.gradient_clip_norm = float(config["training"]["gradient_clip_norm"])
 
     def act(self, observation: np.ndarray, explore: bool = True) -> np.ndarray:
-        observations = torch.as_tensor(observation, dtype=torch.float32).unsqueeze(0)
+        observations = torch.as_tensor(observation, dtype=torch.float32, device=self.device).unsqueeze(0)
         with torch.no_grad():
-            action = self.actor(observations).squeeze(0).numpy()
+            action = self.actor(observations).squeeze(0).cpu().numpy()
         if explore:
             action = action + self.rng.normal(0.0, self.exploration_noise_std, size=action.shape)
         return np.clip(action, -1.0, 1.0).astype(np.float32)
@@ -300,7 +305,9 @@ class DDPGAgent:
         if len(self.replay) < required_samples:
             return None
 
-        observations, actions, rewards, next_observations, terminated = self.replay.sample(self.minibatch_size)
+        observations, actions, rewards, next_observations, terminated = (
+            value.to(self.device) for value in self.replay.sample(self.minibatch_size)
+        )
         # Bootstrap only when a valid next state is available
         with torch.no_grad():
             next_actions = self.target_actor(next_observations)
@@ -352,9 +359,11 @@ class DDPGAgent:
         }
 
 
-def create_agent(config: dict, seed: int) -> PPOAgent | DDPGAgent:
+def create_agent(config: dict, seed: int, device: str = "cpu") -> PPOAgent | DDPGAgent:
     if config["algorithm"]["name"] == "ppo":
+        if device != "cpu":
+            raise ValueError("CUDA device support is currently limited to DDPG")
         return PPOAgent(config=config, seed=seed)
     if config["algorithm"]["name"] == "ddpg":
-        return DDPGAgent(config=config, seed=seed)
+        return DDPGAgent(config=config, seed=seed, device=device)
     raise ValueError(f"Unknown algorithm '{config['algorithm']['name']}'")

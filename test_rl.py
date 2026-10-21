@@ -1,5 +1,6 @@
 import unittest
 import hashlib
+from unittest.mock import patch
 from pathlib import Path
 import sys
 from tempfile import TemporaryDirectory
@@ -20,6 +21,22 @@ from train_rl import CAUZ_DATASET_PATH, CoDesignTrainer, _design_returns, _write
 
 
 class RLConfigTests(unittest.TestCase):
+    def test_ddpg_cuda_request_fails_clearly_without_cuda(self):
+        with patch("rl_algorithms.torch.cuda.is_available", return_value=False):
+            with self.assertRaisesRegex(RuntimeError, "CUDA was requested"):
+                create_agent(get_rl_config("ddpg_lognormal"), seed=11, device="cuda")
+
+    @unittest.skipUnless(torch.cuda.is_available(), "CUDA is unavailable")
+    def test_ddpg_cuda_actor_and_critic_update(self):
+        config = get_rl_config("ddpg_lognormal")
+        config["algorithm"].update(hidden_sizes=(16,), minibatch_size=4, learning_starts=4)
+        agent = create_agent(config, seed=11, device="cuda")
+        self.assertEqual(agent.actor.network[0].weight.device.type, "cuda")
+        for index in range(4):
+            observation = np.full(11, index / 10, dtype=np.float32)
+            agent.observe(observation, agent.act(observation), -1.0, observation + 0.01, False)
+        self.assertTrue(np.isfinite(agent.update()["actor_loss"]))
+
     def test_cauz_dataset_is_loaded_directly_and_pinned_by_hash(self):
         digest = hashlib.sha256(CAUZ_DATASET_PATH.read_bytes()).hexdigest()
         data = load_experiment_dataset({"dataset": "cauz", "dataset_sha256": digest})

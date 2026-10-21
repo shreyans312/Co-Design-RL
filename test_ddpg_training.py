@@ -219,6 +219,22 @@ class DDPGTrainingTests(unittest.TestCase):
             self.assertEqual(history.iloc[0].design_scoring_episodes, 4)
             self.assertEqual(len(trainer.design_scores), 4)
 
+    def test_original_ddpg_scale_override_is_recorded_without_changing_default(self):
+        with TemporaryDirectory() as folder:
+            trainer, _, _ = run_experiment(
+                "ddpg_lognormal", seed=44, episode_hours=2, iterations=1,
+                episodes_per_iteration=2, validation_episodes=1,
+                output_directory=Path(folder), design_initial_std=0.8,
+            )
+            saved = json.loads((Path(folder) / "configuration.json").read_text())
+            self.assertEqual(saved["rl"]["design_distribution"]["initial_std"], 0.8)
+            self.assertEqual(saved["runtime"]["device"], "cpu")
+            self.assertEqual(trainer.design_distribution.components, 3)
+            self.assertFalse(trainer.design_distribution.stratified_sampling)
+        self.assertEqual(get_rl_config("ddpg_lognormal")["design_distribution"]["initial_std"], 3.0)
+        with self.assertRaisesRegex(ValueError, "Initial design scale override"):
+            run_experiment("ddpg_lognormal", seed=44, design_initial_std=-1.0)
+
 
 if __name__ == "__main__":
     unittest.main()

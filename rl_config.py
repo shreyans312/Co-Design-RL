@@ -85,7 +85,7 @@ DDPG_CONFIG = {
         "control_algorithm": "PV co-optimisation paper",
         "energy_environment": "local stochastic model",
         "unspecified_ddpg_hyperparameters": "explicit implementation defaults",
-        "design_initial_std": "1.5 implementation choice; paper specifies high variance without a value",
+        "design_initial_std": "3.0 implementation choice; paper specifies high variance without a value",
     },
 }
 

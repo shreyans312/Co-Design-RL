@@ -76,7 +76,8 @@ def _design_returns(returns: np.ndarray, training: dict) -> torch.Tensor:
 
 
 class CoDesignTrainer:
-    def __init__(self, system_config: dict, data: pd.DataFrame, rl_config: dict, seed: int | None = None) -> None:
+    def __init__(self, system_config: dict, data: pd.DataFrame, rl_config: dict, seed: int | None = None,
+                 device: str = "cpu") -> None:
         validate_config(system_config)
         validate_dataset(data)
         validate_rl_config(rl_config)
@@ -93,7 +94,7 @@ class CoDesignTrainer:
         if self.fixed_design is not None:
             build_system_config(self.system_config, self.fixed_design)
         self.seed = int(rl_config["seed"] if seed is None else seed)
-        self.agent = create_agent(self.rl_config, self.seed)
+        self.agent = create_agent(self.rl_config, self.seed, device=device)
         self.design_distribution = create_design_distribution(self.rl_config, self.seed + 1)
         parameters = [
             parameter for parameter in self.design_distribution.parameters() if parameter.requires_grad
@@ -749,6 +750,7 @@ class CoDesignTrainer:
             "design_optimizer": self.design_optimizer.state_dict(),
             "exact_resume_supported": False,
             "checkpoint_purpose": "paired controller and design evaluation",
+            "training_device": str(self.agent.device) if isinstance(self.agent, DDPGAgent) else "cpu",
         }
         if isinstance(self.agent, PPOAgent):
             checkpoint["agent"] = {
@@ -790,9 +792,18 @@ def run_experiment(
     design_warmup_fraction: float | None = None,
     design_scoring: str = "training",
     dataset: str = "synthetic",
+    device: str = "cpu",
+    design_initial_std: float | None = None,
 ) -> tuple[CoDesignTrainer, pd.DataFrame, dict]:
     system_config = get_default_config()
     rl_config = get_rl_config(model_name)
+    if device != "cpu" and rl_config["algorithm"]["name"] != "ddpg":
+        raise ValueError("CUDA device support is currently limited to DDPG")
+    if design_initial_std is not None:
+        if model_name != "ddpg_lognormal" or not np.isfinite(design_initial_std) or design_initial_std <= 0:
+            raise ValueError("Initial design scale override requires original DDPG and a positive finite value")
+        rl_config["design_distribution"]["initial_std"] = design_initial_std
+        rl_config["provenance"]["design_initial_std_override"] = "CLI experimental override"
     rl_config["seed"] = seed
     training = rl_config["training"]
     if dataset not in {"synthetic", "cauz"}:
@@ -828,7 +839,7 @@ def run_experiment(
     validate_config(system_config)
     validate_rl_config(rl_config)
     data = load_experiment_dataset(training)
-    trainer = CoDesignTrainer(system_config, data, rl_config, seed=seed)
+    trainer = CoDesignTrainer(system_config, data, rl_config, seed=seed, device=device)
     if output_directory is not None:
         output_directory.mkdir(parents=True, exist_ok=True)
         _write_training_files(output_directory, trainer, pd.DataFrame())
@@ -862,7 +873,8 @@ def _write_training_files(
         json.dump({"system": trainer.system_config, "rl": trainer.rl_config,
                    "runtime": {"python": platform.python_version(), "torch": str(torch.__version__),
                                "numpy": np.__version__, "pandas": pd.__version__,
-                               "torch_threads": torch.get_num_threads()}}, file, indent=2)
+                               "torch_threads": torch.get_num_threads(),
+                               "device": str(trainer.agent.device) if isinstance(trainer.agent, DDPGAgent) else "cpu"}}, file, indent=2)
     if trainer.validation_records:
         pd.DataFrame(trainer.validation_records).to_csv(output_directory / "validation_episodes.csv", index=False)
     if trainer.design_scores:
@@ -933,6 +945,8 @@ def main() -> None:
     parser.add_argument("--final-exploration-noise-std", type=float)
     parser.add_argument("--design-warmup-fraction", type=float)
     parser.add_argument("--design-scoring", choices=["training", "frozen_actor"], default="training")
+    parser.add_argument("--device", choices=["cpu", "cuda"], default="cpu")
+    parser.add_argument("--design-initial-std", type=float)
     parser.add_argument("--torch-threads", type=int)
     args = parser.parse_args()
     if args.torch_threads is not None:
@@ -945,6 +959,10 @@ def main() -> None:
     model_names = sorted(VARIANTS) if args.model == "all" else [args.model]
     if args.design_scoring == "frozen_actor" and any(VARIANTS[name]["algorithm"]["name"] != "ddpg" for name in model_names):
         parser.error("--design-scoring frozen_actor requires a single DDPG model")
+    if args.device == "cuda" and any(VARIANTS[name]["algorithm"]["name"] != "ddpg" for name in model_names):
+        parser.error("--device cuda requires a DDPG model")
+    if args.design_initial_std is not None and model_names != ["ddpg_lognormal"]:
+        parser.error("--design-initial-std requires --model ddpg_lognormal")
     if args.output_directory is not None:
         for name in model_names:
             destination = args.output_directory / name
@@ -974,6 +992,8 @@ def main() -> None:
             design_warmup_fraction=args.design_warmup_fraction,
             design_scoring=args.design_scoring,
             dataset=args.dataset,
+            device=args.device,
+            design_initial_std=args.design_initial_std,
         )
         summaries.append(validation)
         if model_output_directory is not None:
