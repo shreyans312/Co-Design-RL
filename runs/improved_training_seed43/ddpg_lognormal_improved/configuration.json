@@ -1,0 +1,169 @@
+{
+  "system": {
+    "simulation": {
+      "timestep_hours": 1.0,
+      "episode_hours": 168
+    },
+    "design": {
+      "pv_capacity_kwp": 6.0,
+      "battery_capacity_kwh": 8.0
+    },
+    "battery": {
+      "efficiency": 0.9,
+      "c_rate": 1.0,
+      "minimum_soc_fraction": 0.0
+    },
+    "ev": {
+      "capacity_kwh": 80.0,
+      "minimum_soc_fraction": 0.4,
+      "maximum_power_kw": 5.0,
+      "efficiency": 1.0,
+      "minimum_duration_hours": 5,
+      "maximum_duration_hours": 8,
+      "weekday_visit_probability": 0.9,
+      "weekend_visit_probability": 0.15,
+      "arrival_hours": [
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13
+      ],
+      "arrival_weights": [
+        0.75,
+        0.9,
+        0.9,
+        0.75,
+        0.1,
+        0.1,
+        0.1
+      ]
+    },
+    "economics": {
+      "annual_discount_rate": 0.05,
+      "pv_lifetime_years": 20,
+      "pv_capex_fixed_chf": 100.0,
+      "pv_capex_per_kwp_chf": 775.0,
+      "pv_opex_per_kwp_year_chf": 100.0,
+      "battery_lifetime_years": 10,
+      "battery_capex_fixed_chf": 50.0,
+      "battery_capex_per_kwh_chf": 300.0,
+      "battery_opex_per_kwh_year_chf": 10.0,
+      "ev_discharge_cost_per_kwh": 1.5,
+      "ev_charge_revenue_per_kwh": 1.0,
+      "include_ev_energy_cost": false
+    }
+  },
+  "rl": {
+    "seed": 43,
+    "observation": {
+      "size": 11,
+      "load_scale_kw": 10.0,
+      "price_scale_chf_per_kwh": 1.0,
+      "pv_design_scale_kwp": 12.0,
+      "battery_design_scale_kwh": 20.0
+    },
+    "design_distribution": {
+      "dimensions": 2,
+      "initial_low": [
+        0.0,
+        0.0
+      ],
+      "initial_high": [
+        12.0,
+        20.0
+      ],
+      "minimum": [
+        0.0,
+        0.0
+      ],
+      "maximum": [
+        12.0,
+        20.0
+      ],
+      "learning_rate": 0.001,
+      "name": "lognormal",
+      "components": 4,
+      "initial_std": 0.55,
+      "minimum_std": 0.15,
+      "maximum_std": 0.9,
+      "stratified_initialization": true,
+      "stratified_sampling": true,
+      "minimum_component_weight": 0.05,
+      "trainable_weights": true,
+      "hard_assignment_log_prob": false,
+      "prune_components": false,
+      "entropy_weight": 0.02,
+      "entropy_zero_fraction": 0.75
+    },
+    "training": {
+      "iterations": 500,
+      "episodes_per_iteration": 32,
+      "scenarios_per_design": 4,
+      "validation_episodes": 32,
+      "dataset_days": 365,
+      "normalize_design_returns": true,
+      "design_return_baseline": "leave_one_out",
+      "design_scoring": "training",
+      "gradient_clip_norm": 0.5,
+      "linear_learning_rate_decay": false,
+      "design_warmup_fraction": 0.1,
+      "fixed_design_fraction": 0.0,
+      "prune_interval_fraction": 0.0,
+      "dataset": "cauz",
+      "dataset_sha256": "4bf07cb4471ade78b30f3f393bfd20e3387c4a99af88c38b788221cfbc947c16",
+      "dataset_seed": 42,
+      "matched_validation": true,
+      "validation_seed": 1000042,
+      "validation_every": 5,
+      "reference_designs": [
+        [
+          4.0,
+          4.5
+        ],
+        [
+          6.6,
+          4.5
+        ],
+        [
+          9.0,
+          4.5
+        ]
+      ]
+    },
+    "algorithm": {
+      "name": "ddpg",
+      "hidden_sizes": [
+        256,
+        256
+      ],
+      "activation": "relu",
+      "actor_learning_rate": 0.0001,
+      "critic_learning_rate": 0.001,
+      "discount_factor": 0.99,
+      "target_update_rate": 0.005,
+      "replay_capacity": 100000,
+      "minibatch_size": 256,
+      "exploration_noise_std": 0.3,
+      "learning_starts": 512,
+      "final_exploration_noise_std": 0.05
+    },
+    "provenance": {
+      "control_algorithm": "DDPG",
+      "energy_environment": "local stochastic model",
+      "design_method": "bounded stratified log-normal mixture with common random scenarios",
+      "paper_faithful": false
+    },
+    "model_name": "ddpg_lognormal_improved"
+  },
+  "runtime": {
+    "python": "3.12.15",
+    "torch": "2.9.0+cu128",
+    "numpy": "2.5.4",
+    "pandas": "3.0.6",
+    "torch_threads": 1,
+    "device": "cuda"
+  }
+}

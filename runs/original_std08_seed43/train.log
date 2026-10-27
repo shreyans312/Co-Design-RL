@@ -1,0 +1,129 @@
+initial mode_cost=166.131 reference_cost=167.824
+ddpg_lognormal iteration 5/500 reward=-162.658 validation_cost=137.554 pv=3.936 battery=1.419 sampled_pv=7.83±5.81 sampled_battery=10.09±13.46 actor=49.94 critic=0.5499 battery_sat=0.04 reference_cost=141.293
+ddpg_lognormal iteration 10/500 reward=-167.621 validation_cost=137.110 pv=3.955 battery=1.418 sampled_pv=10.09±7.09 sampled_battery=10.09±9.21 actor=68.88 critic=0.905 battery_sat=0.06 reference_cost=134.805
+ddpg_lognormal iteration 15/500 reward=-166.890 validation_cost=135.051 pv=3.984 battery=1.429 sampled_pv=8.86±7.94 sampled_battery=10.97±13.33 actor=75.13 critic=0.8341 battery_sat=0.04 reference_cost=132.804
+ddpg_lognormal iteration 20/500 reward=-174.297 validation_cost=135.204 pv=3.972 battery=1.443 sampled_pv=9.97±10.27 sampled_battery=8.69±6.07 actor=78.31 critic=0.9049 battery_sat=0.05 reference_cost=133.315
+ddpg_lognormal iteration 25/500 reward=-167.134 validation_cost=135.688 pv=3.968 battery=1.435 sampled_pv=6.67±5.71 sampled_battery=10.28±8.93 actor=79.07 critic=1.297 battery_sat=0.04 reference_cost=133.535
+ddpg_lognormal iteration 30/500 reward=-158.714 validation_cost=135.438 pv=3.940 battery=1.420 sampled_pv=9.61±9.84 sampled_battery=7.34±5.73 actor=78.24 critic=1.111 battery_sat=0.04 reference_cost=133.654
+ddpg_lognormal iteration 35/500 reward=-157.843 validation_cost=137.097 pv=3.919 battery=1.404 sampled_pv=7.92±6.85 sampled_battery=8.38±6.87 actor=77.98 critic=1.154 battery_sat=0.06 reference_cost=133.861
+ddpg_lognormal iteration 40/500 reward=-163.430 validation_cost=136.695 pv=3.915 battery=1.405 sampled_pv=8.04±8.22 sampled_battery=8.24±6.99 actor=77.12 critic=1.165 battery_sat=0.07 reference_cost=134.099
+ddpg_lognormal iteration 45/500 reward=-154.597 validation_cost=135.471 pv=3.923 battery=1.400 sampled_pv=7.73±6.31 sampled_battery=7.71±7.59 actor=76.68 critic=0.8954 battery_sat=0.08 reference_cost=132.885
+ddpg_lognormal iteration 50/500 reward=-150.795 validation_cost=135.176 pv=3.928 battery=1.387 sampled_pv=5.94±5.33 sampled_battery=7.11±7.61 actor=76.54 critic=1.035 battery_sat=0.07 reference_cost=133.144
+ddpg_lognormal iteration 55/500 reward=-147.814 validation_cost=135.575 pv=3.892 battery=1.381 sampled_pv=6.44±4.36 sampled_battery=7.17±4.50 actor=76.62 critic=1.118 battery_sat=0.06 reference_cost=133.367
+ddpg_lognormal iteration 60/500 reward=-148.842 validation_cost=135.620 pv=3.877 battery=1.374 sampled_pv=5.43±2.70 sampled_battery=6.23±3.65 actor=76.2 critic=1.108 battery_sat=0.05 reference_cost=134.077
+ddpg_lognormal iteration 65/500 reward=-149.945 validation_cost=135.129 pv=3.882 battery=1.365 sampled_pv=5.95±3.61 sampled_battery=5.81±4.68 actor=75.45 critic=1.079 battery_sat=0.05 reference_cost=133.208
+ddpg_lognormal iteration 70/500 reward=-165.656 validation_cost=135.723 pv=3.888 battery=1.356 sampled_pv=7.50±5.79 sampled_battery=5.41±5.32 actor=75.26 critic=0.9261 battery_sat=0.07 reference_cost=134.069
+ddpg_lognormal iteration 75/500 reward=-158.103 validation_cost=135.819 pv=3.874 battery=1.340 sampled_pv=5.69±4.14 sampled_battery=7.93±8.58 actor=74.81 critic=0.9627 battery_sat=0.09 reference_cost=132.918
+ddpg_lognormal iteration 80/500 reward=-155.299 validation_cost=135.765 pv=3.870 battery=1.328 sampled_pv=6.18±6.25 sampled_battery=6.29±4.20 actor=75.16 critic=1.167 battery_sat=0.10 reference_cost=133.407
+ddpg_lognormal iteration 85/500 reward=-148.123 validation_cost=136.980 pv=3.838 battery=1.328 sampled_pv=5.71±3.93 sampled_battery=5.87±5.27 actor=75.79 critic=1.135 battery_sat=0.11 reference_cost=135.449
+ddpg_lognormal iteration 90/500 reward=-140.702 validation_cost=135.773 pv=3.816 battery=1.340 sampled_pv=4.34±2.46 sampled_battery=5.40±3.10 actor=74.81 critic=1.191 battery_sat=0.10 reference_cost=133.190
+ddpg_lognormal iteration 95/500 reward=-147.209 validation_cost=135.203 pv=3.762 battery=1.350 sampled_pv=5.67±3.64 sampled_battery=5.17±2.68 actor=74.87 critic=1.033 battery_sat=0.12 reference_cost=133.560
+ddpg_lognormal iteration 100/500 reward=-147.657 validation_cost=135.050 pv=3.688 battery=1.359 sampled_pv=5.74±2.71 sampled_battery=6.85±6.14 actor=74.49 critic=0.9012 battery_sat=0.10 reference_cost=133.624
+ddpg_lognormal iteration 105/500 reward=-149.157 validation_cost=134.409 pv=3.637 battery=1.358 sampled_pv=6.31±4.12 sampled_battery=5.47±4.38 actor=73.78 critic=0.9542 battery_sat=0.11 reference_cost=133.170
+ddpg_lognormal iteration 110/500 reward=-139.587 validation_cost=137.464 pv=3.581 battery=1.367 sampled_pv=6.07±4.16 sampled_battery=4.87±3.17 actor=73.36 critic=0.711 battery_sat=0.13 reference_cost=134.410
+ddpg_lognormal iteration 115/500 reward=-153.470 validation_cost=135.443 pv=3.534 battery=1.379 sampled_pv=7.77±4.66 sampled_battery=5.25±3.47 actor=73.39 critic=0.74 battery_sat=0.12 reference_cost=133.997
+ddpg_lognormal iteration 120/500 reward=-155.177 validation_cost=134.441 pv=3.496 battery=1.396 sampled_pv=5.20±2.69 sampled_battery=5.55±5.05 actor=73.6 critic=0.8399 battery_sat=0.13 reference_cost=133.324
+ddpg_lognormal iteration 125/500 reward=-144.394 validation_cost=134.328 pv=3.464 battery=1.401 sampled_pv=5.34±4.81 sampled_battery=5.06±3.28 actor=72.84 critic=0.899 battery_sat=0.11 reference_cost=134.264
+ddpg_lognormal iteration 130/500 reward=-151.126 validation_cost=134.512 pv=3.419 battery=1.408 sampled_pv=5.71±3.90 sampled_battery=4.89±3.26 actor=73.11 critic=0.9923 battery_sat=0.12 reference_cost=134.017
+ddpg_lognormal iteration 135/500 reward=-149.198 validation_cost=134.728 pv=3.375 battery=1.408 sampled_pv=6.46±4.71 sampled_battery=4.27±3.24 actor=73.32 critic=0.8503 battery_sat=0.14 reference_cost=133.260
+ddpg_lognormal iteration 140/500 reward=-153.149 validation_cost=135.147 pv=3.356 battery=1.408 sampled_pv=5.27±3.46 sampled_battery=3.98±2.95 actor=73.47 critic=0.8165 battery_sat=0.08 reference_cost=133.557
+ddpg_lognormal iteration 145/500 reward=-142.478 validation_cost=134.768 pv=3.328 battery=1.393 sampled_pv=5.48±3.65 sampled_battery=5.00±3.34 actor=74.09 critic=0.6777 battery_sat=0.09 reference_cost=133.643
+ddpg_lognormal iteration 150/500 reward=-145.681 validation_cost=134.509 pv=3.298 battery=1.407 sampled_pv=5.07±2.35 sampled_battery=4.24±3.10 actor=73.71 critic=0.7197 battery_sat=0.15 reference_cost=132.972
+ddpg_lognormal iteration 155/500 reward=-147.111 validation_cost=136.053 pv=3.257 battery=1.436 sampled_pv=4.88±3.03 sampled_battery=4.41±2.01 actor=73.39 critic=0.944 battery_sat=0.12 reference_cost=132.857
+ddpg_lognormal iteration 160/500 reward=-143.962 validation_cost=134.306 pv=3.218 battery=1.440 sampled_pv=5.48±4.85 sampled_battery=4.41±2.90 actor=73.34 critic=1.061 battery_sat=0.11 reference_cost=132.833
+ddpg_lognormal iteration 165/500 reward=-147.105 validation_cost=134.791 pv=3.191 battery=1.445 sampled_pv=4.71±4.54 sampled_battery=3.38±2.39 actor=72.82 critic=1.399 battery_sat=0.14 reference_cost=133.886
+ddpg_lognormal iteration 170/500 reward=-151.243 validation_cost=134.658 pv=3.185 battery=1.447 sampled_pv=5.68±3.89 sampled_battery=4.49±2.98 actor=72.92 critic=0.9985 battery_sat=0.15 reference_cost=134.338
+ddpg_lognormal iteration 175/500 reward=-147.279 validation_cost=134.554 pv=3.194 battery=1.447 sampled_pv=5.66±4.15 sampled_battery=4.47±3.01 actor=73.66 critic=1.014 battery_sat=0.13 reference_cost=133.545
+ddpg_lognormal iteration 180/500 reward=-140.723 validation_cost=134.329 pv=3.207 battery=1.450 sampled_pv=4.97±3.54 sampled_battery=4.68±2.97 actor=74.53 critic=0.9188 battery_sat=0.14 reference_cost=133.840
+ddpg_lognormal iteration 185/500 reward=-146.071 validation_cost=134.735 pv=3.195 battery=1.449 sampled_pv=5.04±2.63 sampled_battery=3.32±1.94 actor=74.01 critic=0.8131 battery_sat=0.12 reference_cost=133.482
+ddpg_lognormal iteration 190/500 reward=-147.923 validation_cost=134.091 pv=3.131 battery=1.447 sampled_pv=5.29±3.71 sampled_battery=4.56±2.93 actor=74.58 critic=1.021 battery_sat=0.14 reference_cost=133.885
+ddpg_lognormal iteration 195/500 reward=-149.243 validation_cost=134.122 pv=3.075 battery=1.451 sampled_pv=5.62±4.20 sampled_battery=4.00±2.48 actor=73.93 critic=1.014 battery_sat=0.15 reference_cost=133.234
+ddpg_lognormal iteration 200/500 reward=-153.440 validation_cost=134.169 pv=3.033 battery=1.435 sampled_pv=4.94±2.04 sampled_battery=4.75±3.16 actor=73.64 critic=1.111 battery_sat=0.13 reference_cost=133.681
+ddpg_lognormal iteration 205/500 reward=-148.225 validation_cost=134.746 pv=3.006 battery=1.420 sampled_pv=5.22±3.05 sampled_battery=3.57±2.91 actor=73.48 critic=1.351 battery_sat=0.18 reference_cost=133.915
+ddpg_lognormal iteration 210/500 reward=-145.320 validation_cost=134.102 pv=2.993 battery=1.409 sampled_pv=4.51±2.26 sampled_battery=3.33±2.05 actor=73.08 critic=1.104 battery_sat=0.17 reference_cost=133.746
+ddpg_lognormal iteration 215/500 reward=-149.678 validation_cost=133.570 pv=2.971 battery=1.416 sampled_pv=5.02±2.85 sampled_battery=4.43±3.91 actor=73.95 critic=0.9765 battery_sat=0.13 reference_cost=134.232
+ddpg_lognormal iteration 220/500 reward=-142.339 validation_cost=134.632 pv=2.948 battery=1.421 sampled_pv=4.45±2.31 sampled_battery=4.28±2.89 actor=74.04 critic=1.175 battery_sat=0.17 reference_cost=134.464
+ddpg_lognormal iteration 225/500 reward=-143.219 validation_cost=134.299 pv=2.926 battery=1.444 sampled_pv=3.88±1.90 sampled_battery=3.80±2.54 actor=73.67 critic=1.174 battery_sat=0.18 reference_cost=134.260
+ddpg_lognormal iteration 230/500 reward=-146.311 validation_cost=135.322 pv=2.889 battery=1.474 sampled_pv=4.20±1.86 sampled_battery=3.64±2.09 actor=74.39 critic=1.269 battery_sat=0.20 reference_cost=134.819
+ddpg_lognormal iteration 235/500 reward=-146.477 validation_cost=134.099 pv=2.858 battery=1.507 sampled_pv=4.18±2.92 sampled_battery=4.94±3.68 actor=73.97 critic=0.9558 battery_sat=0.19 reference_cost=135.301
+ddpg_lognormal iteration 240/500 reward=-142.729 validation_cost=134.534 pv=2.839 battery=1.548 sampled_pv=4.10±3.42 sampled_battery=3.89±2.25 actor=73.92 critic=0.8136 battery_sat=0.18 reference_cost=134.455
+ddpg_lognormal iteration 245/500 reward=-127.541 validation_cost=134.479 pv=2.819 battery=1.578 sampled_pv=4.68±2.41 sampled_battery=3.13±1.33 actor=73.88 critic=1.04 battery_sat=0.18 reference_cost=135.366
+ddpg_lognormal iteration 250/500 reward=-135.766 validation_cost=134.493 pv=2.791 battery=1.608 sampled_pv=3.90±1.79 sampled_battery=4.01±2.23 actor=73.21 critic=0.911 battery_sat=0.18 reference_cost=134.975
+ddpg_lognormal iteration 255/500 reward=-132.948 validation_cost=135.185 pv=2.768 battery=1.626 sampled_pv=4.46±2.32 sampled_battery=3.45±2.02 actor=73.15 critic=0.7893 battery_sat=0.20 reference_cost=134.673
+ddpg_lognormal iteration 260/500 reward=-142.260 validation_cost=133.842 pv=2.753 battery=1.642 sampled_pv=4.65±3.27 sampled_battery=3.46±1.49 actor=73 critic=0.6305 battery_sat=0.19 reference_cost=134.457
+ddpg_lognormal iteration 265/500 reward=-143.247 validation_cost=134.116 pv=2.743 battery=1.658 sampled_pv=3.99±1.68 sampled_battery=3.54±2.09 actor=73.38 critic=0.4836 battery_sat=0.23 reference_cost=134.380
+ddpg_lognormal iteration 270/500 reward=-151.137 validation_cost=134.731 pv=2.723 battery=1.666 sampled_pv=3.56±2.06 sampled_battery=3.68±1.73 actor=73.9 critic=0.5022 battery_sat=0.19 reference_cost=135.157
+ddpg_lognormal iteration 275/500 reward=-140.428 validation_cost=135.136 pv=2.721 battery=1.689 sampled_pv=3.99±2.55 sampled_battery=3.90±2.23 actor=75.01 critic=0.6367 battery_sat=0.19 reference_cost=135.616
+ddpg_lognormal iteration 280/500 reward=-148.480 validation_cost=134.290 pv=2.731 battery=1.710 sampled_pv=3.70±1.71 sampled_battery=3.44±2.10 actor=75.16 critic=0.738 battery_sat=0.22 reference_cost=134.436
+ddpg_lognormal iteration 285/500 reward=-144.938 validation_cost=134.149 pv=2.732 battery=1.721 sampled_pv=4.53±3.50 sampled_battery=4.16±2.71 actor=74.21 critic=0.8423 battery_sat=0.23 reference_cost=134.522
+ddpg_lognormal iteration 290/500 reward=-141.537 validation_cost=134.792 pv=2.740 battery=1.744 sampled_pv=3.95±2.08 sampled_battery=3.01±1.02 actor=74.04 critic=0.8643 battery_sat=0.23 reference_cost=133.829
+ddpg_lognormal iteration 295/500 reward=-148.804 validation_cost=134.717 pv=2.739 battery=1.767 sampled_pv=4.15±2.35 sampled_battery=3.78±2.00 actor=74.17 critic=0.8364 battery_sat=0.21 reference_cost=135.769
+ddpg_lognormal iteration 300/500 reward=-142.555 validation_cost=134.209 pv=2.723 battery=1.791 sampled_pv=3.98±2.37 sampled_battery=4.00±2.15 actor=73.62 critic=0.8315 battery_sat=0.21 reference_cost=135.308
+ddpg_lognormal iteration 305/500 reward=-140.023 validation_cost=134.446 pv=2.710 battery=1.811 sampled_pv=4.02±1.99 sampled_battery=3.66±1.62 actor=74.42 critic=0.8368 battery_sat=0.22 reference_cost=135.735
+ddpg_lognormal iteration 310/500 reward=-148.901 validation_cost=134.735 pv=2.708 battery=1.822 sampled_pv=3.65±2.07 sampled_battery=3.44±1.95 actor=74.75 critic=0.9619 battery_sat=0.25 reference_cost=134.044
+ddpg_lognormal iteration 315/500 reward=-145.111 validation_cost=134.081 pv=2.703 battery=1.837 sampled_pv=3.32±1.15 sampled_battery=3.11±1.53 actor=74.43 critic=1.015 battery_sat=0.24 reference_cost=134.810
+ddpg_lognormal iteration 320/500 reward=-143.517 validation_cost=135.480 pv=2.701 battery=1.845 sampled_pv=4.04±2.55 sampled_battery=3.70±1.84 actor=74.22 critic=0.8488 battery_sat=0.25 reference_cost=135.513
+ddpg_lognormal iteration 325/500 reward=-144.422 validation_cost=133.543 pv=2.706 battery=1.854 sampled_pv=3.38±2.28 sampled_battery=3.21±1.80 actor=75.03 critic=0.9926 battery_sat=0.24 reference_cost=135.727
+ddpg_lognormal iteration 330/500 reward=-143.338 validation_cost=133.347 pv=2.693 battery=1.882 sampled_pv=3.71±2.53 sampled_battery=3.44±1.78 actor=75.01 critic=1 battery_sat=0.30 reference_cost=134.671
+ddpg_lognormal iteration 335/500 reward=-146.618 validation_cost=133.427 pv=2.684 battery=1.924 sampled_pv=3.78±1.84 sampled_battery=3.51±1.98 actor=74.22 critic=1.172 battery_sat=0.25 reference_cost=136.476
+ddpg_lognormal iteration 340/500 reward=-143.401 validation_cost=134.049 pv=2.685 battery=1.937 sampled_pv=3.43±1.63 sampled_battery=3.50±1.71 actor=74.5 critic=1.454 battery_sat=0.22 reference_cost=136.374
+ddpg_lognormal iteration 345/500 reward=-141.500 validation_cost=133.638 pv=2.680 battery=1.947 sampled_pv=3.49±1.83 sampled_battery=4.15±2.13 actor=74.47 critic=1.172 battery_sat=0.25 reference_cost=135.246
+ddpg_lognormal iteration 350/500 reward=-143.918 validation_cost=134.359 pv=2.685 battery=1.936 sampled_pv=3.34±1.28 sampled_battery=3.56±1.46 actor=74.33 critic=1.027 battery_sat=0.20 reference_cost=136.538
+ddpg_lognormal iteration 355/500 reward=-140.974 validation_cost=134.011 pv=2.700 battery=1.921 sampled_pv=3.71±1.84 sampled_battery=2.98±1.44 actor=74.86 critic=0.9477 battery_sat=0.23 reference_cost=135.829
+ddpg_lognormal iteration 360/500 reward=-144.043 validation_cost=134.841 pv=2.713 battery=1.925 sampled_pv=3.38±1.70 sampled_battery=3.30±1.43 actor=74.5 critic=0.8586 battery_sat=0.23 reference_cost=136.383
+ddpg_lognormal iteration 365/500 reward=-146.212 validation_cost=133.993 pv=2.726 battery=1.934 sampled_pv=3.25±1.74 sampled_battery=3.20±1.41 actor=74.61 critic=0.9118 battery_sat=0.23 reference_cost=136.596
+ddpg_lognormal iteration 370/500 reward=-138.804 validation_cost=133.232 pv=2.729 battery=1.913 sampled_pv=3.28±1.64 sampled_battery=3.57±2.02 actor=73.92 critic=0.8258 battery_sat=0.22 reference_cost=135.936
+ddpg_lognormal iteration 375/500 reward=-144.982 validation_cost=134.060 pv=2.733 battery=1.896 sampled_pv=3.15±1.39 sampled_battery=3.22±1.55 actor=73.85 critic=0.8829 battery_sat=0.24 reference_cost=136.692
+ddpg_lognormal iteration 380/500 reward=-151.370 validation_cost=133.935 pv=2.736 battery=1.889 sampled_pv=3.63±1.50 sampled_battery=3.16±1.46 actor=74.23 critic=0.9021 battery_sat=0.29 reference_cost=135.970
+ddpg_lognormal iteration 385/500 reward=-138.302 validation_cost=132.956 pv=2.728 battery=1.896 sampled_pv=3.72±2.28 sampled_battery=3.27±1.32 actor=74.07 critic=1.032 battery_sat=0.24 reference_cost=135.304
+ddpg_lognormal iteration 390/500 reward=-145.192 validation_cost=133.041 pv=2.717 battery=1.889 sampled_pv=3.35±1.54 sampled_battery=3.40±1.80 actor=74.42 critic=1.22 battery_sat=0.23 reference_cost=134.255
+ddpg_lognormal iteration 395/500 reward=-142.973 validation_cost=133.669 pv=2.717 battery=1.890 sampled_pv=3.26±1.51 sampled_battery=3.23±1.47 actor=74.35 critic=1.125 battery_sat=0.20 reference_cost=134.212
+ddpg_lognormal iteration 400/500 reward=-139.208 validation_cost=133.804 pv=2.723 battery=1.895 sampled_pv=3.39±1.65 sampled_battery=3.30±1.74 actor=74.21 critic=1.016 battery_sat=0.18 reference_cost=135.050
+ddpg_lognormal iteration 405/500 reward=-152.162 validation_cost=134.125 pv=2.719 battery=1.902 sampled_pv=3.44±1.33 sampled_battery=3.00±1.21 actor=75.33 critic=1.016 battery_sat=0.20 reference_cost=134.711
+ddpg_lognormal iteration 410/500 reward=-143.484 validation_cost=133.252 pv=2.717 battery=1.886 sampled_pv=3.68±2.12 sampled_battery=3.33±1.96 actor=74.9 critic=0.7261 battery_sat=0.23 reference_cost=135.093
+ddpg_lognormal iteration 415/500 reward=-140.029 validation_cost=133.529 pv=2.713 battery=1.879 sampled_pv=3.44±1.38 sampled_battery=3.03±1.15 actor=74.84 critic=0.7159 battery_sat=0.17 reference_cost=135.037
+ddpg_lognormal iteration 420/500 reward=-145.701 validation_cost=133.457 pv=2.711 battery=1.880 sampled_pv=3.26±1.52 sampled_battery=2.99±1.25 actor=74.69 critic=0.7038 battery_sat=0.18 reference_cost=135.623
+ddpg_lognormal iteration 425/500 reward=-143.186 validation_cost=134.004 pv=2.709 battery=1.890 sampled_pv=3.83±1.78 sampled_battery=3.09±1.43 actor=74.46 critic=0.6853 battery_sat=0.22 reference_cost=136.960
+ddpg_lognormal iteration 430/500 reward=-146.663 validation_cost=134.283 pv=2.692 battery=1.900 sampled_pv=3.60±1.66 sampled_battery=2.71±1.08 actor=74.95 critic=0.8085 battery_sat=0.21 reference_cost=137.804
+ddpg_lognormal iteration 435/500 reward=-145.811 validation_cost=133.735 pv=2.662 battery=1.926 sampled_pv=3.50±1.27 sampled_battery=2.97±1.32 actor=75.13 critic=0.9222 battery_sat=0.27 reference_cost=137.886
+ddpg_lognormal iteration 440/500 reward=-141.494 validation_cost=132.826 pv=2.639 battery=1.947 sampled_pv=3.13±1.32 sampled_battery=3.05±1.49 actor=75.1 critic=1.053 battery_sat=0.27 reference_cost=139.343
+ddpg_lognormal iteration 445/500 reward=-150.430 validation_cost=133.301 pv=2.622 battery=1.987 sampled_pv=2.64±0.82 sampled_battery=2.78±0.83 actor=75.24 critic=1.158 battery_sat=0.23 reference_cost=137.210
+ddpg_lognormal iteration 450/500 reward=-146.090 validation_cost=132.250 pv=2.594 battery=2.000 sampled_pv=3.14±1.18 sampled_battery=3.23±1.17 actor=75.87 critic=1.096 battery_sat=0.25 reference_cost=136.187
+ddpg_lognormal iteration 455/500 reward=-145.804 validation_cost=133.007 pv=2.581 battery=1.999 sampled_pv=3.07±1.33 sampled_battery=3.35±1.91 actor=76.11 critic=0.9056 battery_sat=0.26 reference_cost=137.824
+ddpg_lognormal iteration 460/500 reward=-149.426 validation_cost=133.138 pv=2.561 battery=1.979 sampled_pv=3.31±1.26 sampled_battery=2.77±1.03 actor=76.04 critic=0.9782 battery_sat=0.26 reference_cost=138.014
+ddpg_lognormal iteration 465/500 reward=-145.839 validation_cost=132.974 pv=2.544 battery=1.953 sampled_pv=3.33±1.25 sampled_battery=2.96±1.34 actor=76.16 critic=0.9211 battery_sat=0.27 reference_cost=137.778
+ddpg_lognormal iteration 470/500 reward=-146.246 validation_cost=132.715 pv=2.528 battery=1.952 sampled_pv=3.37±1.51 sampled_battery=2.79±0.86 actor=75.77 critic=0.9844 battery_sat=0.24 reference_cost=136.818
+ddpg_lognormal iteration 475/500 reward=-141.940 validation_cost=133.299 pv=2.516 battery=1.953 sampled_pv=3.16±1.21 sampled_battery=2.73±1.01 actor=75.77 critic=1.018 battery_sat=0.26 reference_cost=137.879
+ddpg_lognormal iteration 480/500 reward=-147.575 validation_cost=133.335 pv=2.509 battery=1.960 sampled_pv=2.73±1.27 sampled_battery=2.95±1.16 actor=75.45 critic=0.8652 battery_sat=0.24 reference_cost=138.010
+ddpg_lognormal iteration 485/500 reward=-147.756 validation_cost=133.410 pv=2.504 battery=1.969 sampled_pv=3.18±1.31 sampled_battery=2.97±1.03 actor=75.37 critic=0.8285 battery_sat=0.26 reference_cost=139.316
+ddpg_lognormal iteration 490/500 reward=-143.602 validation_cost=133.548 pv=2.488 battery=1.977 sampled_pv=2.70±1.36 sampled_battery=2.95±1.27 actor=75.33 critic=0.7247 battery_sat=0.26 reference_cost=137.686
+ddpg_lognormal iteration 495/500 reward=-142.697 validation_cost=133.962 pv=2.473 battery=1.996 sampled_pv=3.20±1.54 sampled_battery=2.82±0.98 actor=75.62 critic=0.7821 battery_sat=0.27 reference_cost=136.926
+ddpg_lognormal iteration 500/500 reward=-142.392 validation_cost=133.390 pv=2.465 battery=2.006 sampled_pv=2.58±1.40 sampled_battery=3.33±0.98 actor=75.77 critic=0.7195 battery_sat=0.28 reference_cost=138.052
+[
+  {
+    "model": "ddpg_lognormal",
+    "split": "validation",
+    "episodes": 32,
+    "protocol": "matched",
+    "sampled_designs": false,
+    "iteration": 500,
+    "validation_seed": 1000042,
+    "validation_mode_cost_chf": 133.39007180695899,
+    "validation_mode_cost_std_chf": 9.833455395435406,
+    "mean_cost_chf": 133.39007180695899,
+    "mean_reward_chf": -133.39007180695899,
+    "std_reward_chf": 9.833455395435406,
+    "mean_pv_capacity_kwp": 2.464900493621826,
+    "mean_battery_capacity_kwh": 2.005571126937866,
+    "validation_distribution_cost_chf": 134.91335534102075,
+    "validation_distribution_cost_std_chf": 10.243111888981982,
+    "validation_reference_0_cost_chf": 136.74835946134436,
+    "validation_reference_0_cost_std_chf": 11.857190140225228,
+    "validation_reference_1_cost_chf": 136.371511448297,
+    "validation_reference_1_cost_std_chf": 13.271247219482891,
+    "validation_reference_2_cost_chf": 141.0356749019056,
+    "validation_reference_2_cost_std_chf": 14.349884889877877,
+    "validation_reference_cost_chf": 138.05184860384898,
+    "max_power_balance_error_kw": 8.881784197001252e-16
+  }
+]
